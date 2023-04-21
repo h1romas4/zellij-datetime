@@ -56,7 +56,7 @@ cargo install zellij
 # Add Rust target wasm32-wasi
 rustup target add wasm32-wasi
 # Git clone
-git clone
+git clone https://github.com/h1romas4/zellij-datetime
 # Building the plugin
 cargo build
 # Running in Zellij
