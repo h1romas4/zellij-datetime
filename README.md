@@ -1,5 +1,7 @@
 # zellij-datetime
 
+![](https://github.com/h1romas4/zellij-datetime/workflows/Build/badge.svg)
+
 This plugin adds a date and time pane to [Zellij](https://zellij.dev/), a terminal multiplexer.
 
 ![zellij-01.png](https://raw.githubusercontent.com/h1romas4/zellij-datetime/main/docs/images/zellij-01.png)
