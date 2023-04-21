@@ -2,6 +2,8 @@
 
 This plugin adds a date and time pane to [Zellij](https://zellij.dev/), a terminal multiplexer.
 
+![zellij-01.png](https://raw.githubusercontent.com/h1romas4/zellij-datetime/main/docs/images/zellij-01.png)
+
 This plugin was created for my Zellij studies. For this reason, the time zone settings and color schemes are not yet implemented. If you need to make changes, please build this repository to get the modified .wasm.
 
 Since it is a WebAssembly/WASI build, it will probably work in all environments, including amd64, Arm, and RISC-V.
