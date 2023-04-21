@@ -65,11 +65,11 @@ impl ZellijPlugin for State {
         );
         // time
         let time = format!(
-            "{hour:02}:{minute:02}:{sec:02}",
-            // "{hour:02}:{minute:02}",
+            // "{hour:02}:{minute:02}:{sec:02}",
+            "{hour:02}:{minute:02}",
             hour = now.hour(),
             minute = now.minute(),
-            sec = now.second(),
+            // sec = now.second(),
         );
 
         // TODO: respect theme pallet
