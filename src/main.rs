@@ -41,7 +41,9 @@ impl ZellijPlugin for State {
                 }
                 self.mode_info = mode_info;
             }
-            _ => {}
+            _ => {
+                self.render = false;
+            }
         }
 
         self.render
