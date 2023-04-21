@@ -65,11 +65,11 @@ impl ZellijPlugin for State {
         );
         // time
         let time = format!(
-            // "{hour:02}:{minute:02}:{sec:02}",
-            "{hour:02}:{minute:02}",
+            "{hour:02}:{minute:02}:{sec:02}",
+            // "{hour:02}:{minute:02}",
             hour = now.hour(),
             minute = now.minute(),
-            // sec = now.second(),
+            sec = now.second(),
         );
 
         // TODO: respect theme pallet
@@ -90,11 +90,14 @@ impl ZellijPlugin for State {
         line.push_str(&style!(fg2, bg2).bold().paint(&time).to_string());
         line.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
 
-        // padding (ANSI only)
-        let padding = " ".repeat(cols - (date.len() + time.len() + 6));
-
         // render
-        print!("{}", style!(pallet.fg, pallet.bg).paint(padding));
-        print!("{}", line);
+        let width = date.len() + time.len() + 6;
+        // There are cases where cols may be declared momentarily low at render time.
+        if cols as isize - width as isize > 0 {
+            // padding (ANSI only)
+            let padding = " ".repeat(cols - width);
+            print!("{}", style!(pallet.fg, pallet.bg).paint(padding));
+            print!("{}", line);
+       }
     }
 }
