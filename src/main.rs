@@ -20,7 +20,6 @@ struct State {
     lp_2: String,
     lp_3: String,
     padding: String,
-    cols: usize,
 }
 register_plugin!(State);
 
@@ -32,7 +31,6 @@ impl ZellijPlugin for State {
             EventType::Visible,
             EventType::ModeUpdate,
         ]);
-        self.cols = 0;
         self.init = false;
     }
 
@@ -112,17 +110,14 @@ impl ZellijPlugin for State {
         }
 
         // padding
-        if self.cols != cols {
-            // There are cases where cols may be declared momentarily low at render time.
-            let width = date.len() + time.len() + 6;
-            if cols as isize - width as isize > 0 {
-                // padding (ANSI only)
-                let padding = " ".repeat(cols - width);
-                self.padding = format!("{}", style!(self.pallet_fg, self.pallet_bg).paint(padding));
-            } else {
-                self.padding = String::new();
-            }
-            self.cols = cols;
+        let width = date.len() + time.len() + 6;
+        // There are cases where cols may be declared momentarily low at render time.
+        if cols as isize - width as isize > 0 {
+            // padding (ANSI only)
+            let padding = " ".repeat(cols - width);
+            self.padding = format!("{}", style!(self.pallet_fg, self.pallet_bg).paint(padding));
+        } else {
+            self.padding = String::new();
         }
 
         // render
