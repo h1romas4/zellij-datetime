@@ -2,6 +2,8 @@ use chrono::prelude::*;
 use zellij_tile::prelude::*;
 use zellij_tile_utils::style;
 
+static DATETIME_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
+
 static ARROW_SEPARATOR_1: &str = "";
 static ARROW_SEPARATOR_2: &str = "";
 static ARROW_SPACE: &str = " ";
@@ -16,6 +18,7 @@ struct State {
     init: bool,
     pallet_fg: PaletteColor,
     pallet_bg: PaletteColor,
+    datetime_bg_color: PaletteColor,
     lp_1: String,
     lp_2: String,
     lp_3: String,
@@ -84,8 +87,6 @@ impl ZellijPlugin for State {
             // sec = now.second(),
         );
 
-        // pallet
-        let bg2 = PaletteColor::Rgb((32, 32, 32));
 
         // initialize cursol charctors
         if self.mode_update {
@@ -93,8 +94,10 @@ impl ZellijPlugin for State {
                 // pallet
                 self.pallet_fg = self.mode_info.style.colors.fg;
                 self.pallet_bg = self.mode_info.style.colors.bg;
+                self.datetime_bg_color = PaletteColor::Rgb(DATETIME_BG_COLOR);
                 // create line string
                 let bg1 = self.pallet_bg;
+                let bg2 = self.datetime_bg_color;
                 self.lp_1 = String::new();
                 self.lp_1.push_str(&style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string());
                 self.lp_1.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
@@ -121,8 +124,10 @@ impl ZellijPlugin for State {
         }
 
         // render
+        let bg2 = self.datetime_bg_color;
         let date = style!(self.pallet_fg, bg2).paint(&date).to_string();
         let time = style!(self.pallet_fg, bg2).paint(&time).to_string();
+
         print!("{}{}{}{}{}{}", self.padding, self.lp_1, date, self.lp_2, time, self.lp_3);
     }
 }
