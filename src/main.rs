@@ -18,7 +18,11 @@ register_plugin!(State);
 impl ZellijPlugin for State {
     fn load(&mut self) {
         set_selectable(false);
-        subscribe(&[EventType::Timer, EventType::Visible]);
+        subscribe(&[
+            EventType::Timer,
+            EventType::Visible,
+            EventType::ModeUpdate,
+        ]);
     }
 
     fn update(&mut self, event: Event) -> bool {
@@ -41,9 +45,7 @@ impl ZellijPlugin for State {
                 }
                 self.mode_info = mode_info;
             }
-            _ => {
-                self.render = false;
-            }
+            _ => {}
         }
 
         self.render
@@ -72,11 +74,9 @@ impl ZellijPlugin for State {
             // sec = now.second(),
         );
 
-        // TODO: respect theme pallet
         let pallet = self.mode_info.style.colors;
-        let fg1 = PaletteColor::Rgb((128, 128, 128));
-        let fg2 = PaletteColor::Rgb((255, 255, 255));
-        let bg1 = PaletteColor::Rgb((0, 0, 0));
+        let fg1 = pallet.fg;
+        let bg1 = pallet.bg;
         let bg2 = PaletteColor::Rgb((32, 32, 32));
 
         // create line string
@@ -85,9 +85,9 @@ impl ZellijPlugin for State {
         line.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
         line.push_str(&style!(fg1, bg2).paint(&date).to_string());
         line.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-        line.push_str(&style!(fg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string());
+        line.push_str(&style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string());
         line.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-        line.push_str(&style!(fg2, bg2).bold().paint(&time).to_string());
+        line.push_str(&style!(fg1, bg2).bold().paint(&time).to_string());
         line.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
 
         // render
