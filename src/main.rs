@@ -2,6 +2,7 @@ use chrono::prelude::*;
 use zellij_tile::prelude::*;
 use zellij_tile_utils::style;
 
+static TIMEZONE_OFFSET: i32 = 9;
 static DATETIME_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
 
 static ARROW_SEPARATOR_1: &str = "";
@@ -12,10 +13,12 @@ static INTERVAL_TIME: f64 = 1.0;
 
 #[derive(Default)]
 struct State {
-    render: bool,
+    now: Option<DateTime<FixedOffset>>,
+    before_now: u32,
+    visible: bool,
+    init: bool,
     mode_info: ModeInfo,
     mode_update: bool,
-    init: bool,
     pallet_fg: PaletteColor,
     pallet_bg: PaletteColor,
     datetime_bg_color: PaletteColor,
@@ -38,30 +41,42 @@ impl ZellijPlugin for State {
     }
 
     fn update(&mut self, event: Event) -> bool {
+        let mut render: bool = false;
         match event {
             Event::Visible(true) => {
-                set_timeout(INTERVAL_TIME);
-                self.render = true;
+                set_timeout(0.0);
+                self.visible = true;
             }
             Event::Visible(false) => {
-                self.render = false;
+                self.visible = false;
             }
             Event::Timer(_t) => {
-                if self.render {
+                // TODO: suport timezone or add plugin setting
+                // Timezone may not be obtained by WASI.
+                // let now = Local::now();
+                let now = Utc::now().with_timezone(&FixedOffset::east(TIMEZONE_OFFSET * 3600));
+                // render at 1 minute intervals.
+                let now_minute = now.minute();
+                if self.before_now != now_minute {
+                    render = true;
+                    self.before_now = now_minute;
+                }
+                self.now = Some(now);
+                if self.visible {
                     set_timeout(INTERVAL_TIME);
                 }
             }
             Event::ModeUpdate(mode_info) => {
                 if self.mode_info != mode_info {
-                    self.render = true;
+                    render = true;
                     self.mode_update = true;
                 }
                 self.mode_info = mode_info;
             }
             _ => {}
         }
-
-        self.render
+        // should render
+        render
     }
 
     fn render(&mut self, _rows: usize, cols: usize) {
@@ -89,44 +104,41 @@ impl ZellijPlugin for State {
             self.mode_update = false;
         }
 
-        // TODO: suport timezone or add plugin setting
-        // Timezone may not be obtained by WASI.
-        // let now = Local::now();
-        let now = Utc::now().with_timezone(&FixedOffset::east(9 * 3600));
+        if let Some(now) = self.now {
+            // date
+            let date = format!(
+                "{year}-{month:02}-{day:02} {weekday}",
+                year = now.year(),
+                month = now.month(),
+                day = now.day(),
+                weekday = now.weekday(),
+            );
+            // time
+            let time = format!(
+                // "{hour:02}:{minute:02}:{sec:02}",
+                "{hour:02}:{minute:02}",
+                hour = now.hour(),
+                minute = now.minute(),
+                // sec = now.second(),
+            );
 
-        // date
-        let date = format!(
-            "{year}-{month:02}-{day:02} {weekday}",
-            year = now.year(),
-            month = now.month(),
-            day = now.day(),
-            weekday = now.weekday(),
-        );
-        // time
-        let time = format!(
-            // "{hour:02}:{minute:02}:{sec:02}",
-            "{hour:02}:{minute:02}",
-            hour = now.hour(),
-            minute = now.minute(),
-            // sec = now.second(),
-        );
+            // padding
+            let width = date.len() + time.len() + 6;
+            // There are cases where cols may be declared momentarily low at render time.
+            if cols as isize - width as isize > 0 {
+                // padding (ANSI only)
+                let padding = " ".repeat(cols - width);
+                self.padding = format!("{}", style!(self.pallet_fg, self.pallet_bg).paint(padding));
+            } else {
+                self.padding = String::new();
+            }
 
-        // padding
-        let width = date.len() + time.len() + 6;
-        // There are cases where cols may be declared momentarily low at render time.
-        if cols as isize - width as isize > 0 {
-            // padding (ANSI only)
-            let padding = " ".repeat(cols - width);
-            self.padding = format!("{}", style!(self.pallet_fg, self.pallet_bg).paint(padding));
-        } else {
-            self.padding = String::new();
+            // render
+            let bg2 = self.datetime_bg_color;
+            let date = style!(self.pallet_fg, bg2).paint(&date).to_string();
+            let time = style!(self.pallet_fg, bg2).paint(&time).to_string();
+
+            print!("{}{}{}{}{}{}", self.padding, self.lp_1, date, self.lp_2, time, self.lp_3);
         }
-
-        // render
-        let bg2 = self.datetime_bg_color;
-        let date = style!(self.pallet_fg, bg2).paint(&date).to_string();
-        let time = style!(self.pallet_fg, bg2).paint(&time).to_string();
-
-        print!("{}{}{}{}{}{}", self.padding, self.lp_1, date, self.lp_2, time, self.lp_3);
     }
 }
