@@ -65,29 +65,6 @@ impl ZellijPlugin for State {
     }
 
     fn render(&mut self, _rows: usize, cols: usize) {
-        // TODO: suport timezone or add plugin setting
-        // Timezone may not be obtained by WASI.
-        // let now = Local::now();
-        let now = Utc::now().with_timezone(&FixedOffset::east(9 * 3600));
-
-        // date
-        let date = format!(
-            "{year}-{month:02}-{day:02} {weekday}",
-            year = now.year(),
-            month = now.month(),
-            day = now.day(),
-            weekday = now.weekday(),
-        );
-        // time
-        let time = format!(
-            // "{hour:02}:{minute:02}:{sec:02}",
-            "{hour:02}:{minute:02}",
-            hour = now.hour(),
-            minute = now.minute(),
-            // sec = now.second(),
-        );
-
-
         // initialize cursol charctors
         if self.mode_update {
             if !self.init {
@@ -111,6 +88,28 @@ impl ZellijPlugin for State {
             }
             self.mode_update = false;
         }
+
+        // TODO: suport timezone or add plugin setting
+        // Timezone may not be obtained by WASI.
+        // let now = Local::now();
+        let now = Utc::now().with_timezone(&FixedOffset::east(9 * 3600));
+
+        // date
+        let date = format!(
+            "{year}-{month:02}-{day:02} {weekday}",
+            year = now.year(),
+            month = now.month(),
+            day = now.day(),
+            weekday = now.weekday(),
+        );
+        // time
+        let time = format!(
+            // "{hour:02}:{minute:02}:{sec:02}",
+            "{hour:02}:{minute:02}",
+            hour = now.hour(),
+            minute = now.minute(),
+            // sec = now.second(),
+        );
 
         // padding
         let width = date.len() + time.len() + 6;
