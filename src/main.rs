@@ -54,7 +54,8 @@ impl ZellijPlugin for State {
                 // TODO: suport timezone or add plugin setting
                 // Timezone may not be obtained by WASI.
                 // let now = Local::now();
-                let now = Utc::now().with_timezone(&FixedOffset::east(TIMEZONE_OFFSET * 3600));
+                let now = Utc::now()
+                    .with_timezone(&FixedOffset::east(TIMEZONE_OFFSET * 3600));
                 // render at 1 minute intervals.
                 let now_minute = now.minute();
                 if self.before_now != now_minute {
@@ -91,14 +92,20 @@ impl ZellijPlugin for State {
                 let bg1 = self.pallet_bg;
                 let bg2 = self.datetime_bg_color;
                 self.lp_1 = String::new();
-                self.lp_1.push_str(&style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string());
-                self.lp_1.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+                self.lp_1
+                    .push_str(&style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string());
+                self.lp_1
+                    .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
                 self.lp_2 = String::new();
-                self.lp_2.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-                self.lp_2.push_str(&style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string());
-                self.lp_2.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+                self.lp_2
+                    .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+                self.lp_2
+                    .push_str(&style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string());
+                self.lp_2
+                    .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
                 self.lp_3 = String::new();
-                self.lp_3.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+                self.lp_3
+                    .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
                 self.init = true;
             }
             self.mode_update = false;
@@ -138,7 +145,10 @@ impl ZellijPlugin for State {
             let date = style!(self.pallet_fg, bg2).paint(&date).to_string();
             let time = style!(self.pallet_fg, bg2).paint(&time).to_string();
 
-            print!("{}{}{}{}{}{}", self.padding, self.lp_1, date, self.lp_2, time, self.lp_3);
+            print!(
+                "{}{}{}{}{}{}",
+                self.padding, self.lp_1, date, self.lp_2, time, self.lp_3
+            );
         }
     }
 }
