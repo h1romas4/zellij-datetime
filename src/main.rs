@@ -13,7 +13,9 @@ struct State {
     render: bool,
     mode_info: ModeInfo,
     mode_update: bool,
-    pallet: Palette,
+    init: bool,
+    pallet_fg: PaletteColor,
+    pallet_bg: PaletteColor,
     lp_1: String,
     lp_2: String,
     lp_3: String,
@@ -30,6 +32,8 @@ impl ZellijPlugin for State {
             EventType::Visible,
             EventType::ModeUpdate,
         ]);
+        self.cols = 0;
+        self.init = false;
     }
 
     fn update(&mut self, event: Event) -> bool {
@@ -83,24 +87,27 @@ impl ZellijPlugin for State {
         );
 
         // pallet
-        self.pallet = self.mode_info.style.colors;
-        let fg1 = self.pallet.fg;
-        let bg1 = self.pallet.bg;
         let bg2 = PaletteColor::Rgb((32, 32, 32));
 
         // initialize cursol charctors
         if self.mode_update {
-            // create line string
-            self.lp_1 = String::new();
-            self.lp_1.push_str(&style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string());
-            self.lp_1.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-            self.lp_2 = String::new();
-            self.lp_2.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-            self.lp_2.push_str(&style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string());
-            self.lp_2.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-            self.lp_3 = String::new();
-            self.lp_3.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-
+            if !self.init {
+                // pallet
+                self.pallet_fg = self.mode_info.style.colors.fg;
+                self.pallet_bg = self.mode_info.style.colors.bg;
+                // create line string
+                let bg1 = self.pallet_bg;
+                self.lp_1 = String::new();
+                self.lp_1.push_str(&style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string());
+                self.lp_1.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+                self.lp_2 = String::new();
+                self.lp_2.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+                self.lp_2.push_str(&style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string());
+                self.lp_2.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+                self.lp_3 = String::new();
+                self.lp_3.push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+                self.init = true;
+            }
             self.mode_update = false;
         }
 
@@ -111,7 +118,7 @@ impl ZellijPlugin for State {
             if cols as isize - width as isize > 0 {
                 // padding (ANSI only)
                 let padding = " ".repeat(cols - width);
-                self.padding = format!("{}", style!(self.pallet.fg, self.pallet.bg).paint(padding));
+                self.padding = format!("{}", style!(self.pallet_fg, self.pallet_bg).paint(padding));
             } else {
                 self.padding = String::new();
             }
@@ -119,8 +126,8 @@ impl ZellijPlugin for State {
         }
 
         // render
-        let date = style!(fg1, bg2).paint(&date).to_string();
-        let time = style!(fg1, bg2).paint(&time).to_string();
+        let date = style!(self.pallet_fg, bg2).paint(&date).to_string();
+        let time = style!(self.pallet_fg, bg2).paint(&time).to_string();
         print!("{}{}{}{}{}{}", self.padding, self.lp_1, date, self.lp_2, time, self.lp_3);
     }
 }
