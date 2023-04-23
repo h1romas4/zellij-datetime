@@ -2,7 +2,9 @@ use chrono::prelude::*;
 use zellij_tile::prelude::*;
 use zellij_tile_utils::style;
 
+// FIXME: UTC+9
 static TIMEZONE_OFFSET: i32 = 9;
+// Dark gray
 static DATETIME_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
 
 static ARROW_SEPARATOR_1: &str = "";
@@ -36,6 +38,7 @@ impl ZellijPlugin for State {
             EventType::Visible,
             EventType::ModeUpdate,
         ]);
+        self.before_now = u32::MAX;
     }
 
     fn update(&mut self, event: Event) -> bool {
@@ -59,8 +62,8 @@ impl ZellijPlugin for State {
                 if self.before_now != now_minute {
                     render = true;
                     self.before_now = now_minute;
+                    self.now = Some(now);
                 }
-                self.now = Some(now);
                 if self.visible {
                     set_timeout(INTERVAL_TIME);
                 }
@@ -117,19 +120,17 @@ impl ZellijPlugin for State {
             );
             // time
             let time = format!(
-                // "{hour:02}:{minute:02}:{sec:02}",
                 "{hour:02}:{minute:02}",
                 hour = now.hour(),
                 minute = now.minute(),
-                // sec = now.second(),
             );
 
             // padding
             let width = date.len() + time.len() + 6;
             // There are cases where cols may be declared momentarily low at render time.
             if cols as isize - width as isize > 0 {
-                // padding (ANSI only)
-                let padding = " ".repeat(cols - width);
+                // only half width char
+                let padding = ARROW_SPACE.repeat(cols - width);
                 self.padding = style!(self.pallet_fg, self.pallet_bg).paint(padding).to_string();
             } else {
                 self.padding = String::new();
