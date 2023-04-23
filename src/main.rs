@@ -69,8 +69,8 @@ impl ZellijPlugin for State {
                 if self.mode_info != mode_info {
                     render = true;
                     self.mode_update = true;
+                    self.mode_info = mode_info;
                 }
-                self.mode_info = mode_info;
             }
             _ => {}
         }
@@ -103,6 +103,7 @@ impl ZellijPlugin for State {
             self.lp_3 = String::new();
             self.lp_3
                 .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+            self.mode_update = false;
         }
 
         if let Some(now) = self.now {
