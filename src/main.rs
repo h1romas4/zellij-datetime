@@ -130,7 +130,7 @@ impl ZellijPlugin for State {
             if cols as isize - width as isize > 0 {
                 // padding (ANSI only)
                 let padding = " ".repeat(cols - width);
-                self.padding = format!("{}", style!(self.pallet_fg, self.pallet_bg).paint(padding));
+                self.padding = style!(self.pallet_fg, self.pallet_bg).paint(padding).to_string();
             } else {
                 self.padding = String::new();
             }
