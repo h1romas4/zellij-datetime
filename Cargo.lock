@@ -2577,7 +2577,7 @@ dependencies = [
 
 [[package]]
 name = "zellij-datetime"
-version = "0.3.2"
+version = "0.4.0"
 dependencies = [
  "ansi_term",
  "chrono-wasi",

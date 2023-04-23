@@ -21,7 +21,7 @@ zellij setup --dump-layout default > ~/.config/zellij/layouts/default.kdl
 # deploy plugin .wasm
 cd ~/.config/zellij/plugins/
 # download datetime plugin
-wget https://github.com/h1romas4/zellij-datetime/releases/download/v0.3.2/zellij-datetime.wasm
+wget https://github.com/h1romas4/zellij-datetime/releases/download/v0.4.0/zellij-datetime.wasm
 ```
 
 ## Usage
