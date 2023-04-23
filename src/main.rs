@@ -16,7 +16,6 @@ struct State {
     now: Option<DateTime<FixedOffset>>,
     before_now: u32,
     visible: bool,
-    init: bool,
     mode_info: ModeInfo,
     mode_update: bool,
     pallet_fg: PaletteColor,
@@ -37,7 +36,6 @@ impl ZellijPlugin for State {
             EventType::Visible,
             EventType::ModeUpdate,
         ]);
-        self.init = false;
     }
 
     fn update(&mut self, event: Event) -> bool {
@@ -83,32 +81,28 @@ impl ZellijPlugin for State {
     fn render(&mut self, _rows: usize, cols: usize) {
         // initialize cursol charctors
         if self.mode_update {
-            if !self.init {
-                // pallet
-                self.pallet_fg = self.mode_info.style.colors.fg;
-                self.pallet_bg = self.mode_info.style.colors.bg;
-                self.datetime_bg_color = PaletteColor::Rgb(DATETIME_BG_COLOR);
-                // create line string
-                let bg1 = self.pallet_bg;
-                let bg2 = self.datetime_bg_color;
-                self.lp_1 = String::new();
-                self.lp_1
-                    .push_str(&style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string());
-                self.lp_1
-                    .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-                self.lp_2 = String::new();
-                self.lp_2
-                    .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-                self.lp_2
-                    .push_str(&style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string());
-                self.lp_2
-                    .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-                self.lp_3 = String::new();
-                self.lp_3
-                    .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-                self.init = true;
-            }
-            self.mode_update = false;
+            // pallet
+            self.pallet_fg = self.mode_info.style.colors.fg;
+            self.pallet_bg = self.mode_info.style.colors.bg;
+            self.datetime_bg_color = PaletteColor::Rgb(DATETIME_BG_COLOR);
+            // create line string
+            let bg1 = self.pallet_bg;
+            let bg2 = self.datetime_bg_color;
+            self.lp_1 = String::new();
+            self.lp_1
+                .push_str(&style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string());
+            self.lp_1
+                .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+            self.lp_2 = String::new();
+            self.lp_2
+                .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+            self.lp_2
+                .push_str(&style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string());
+            self.lp_2
+                .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+            self.lp_3 = String::new();
+            self.lp_3
+                .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
         }
 
         if let Some(now) = self.now {
