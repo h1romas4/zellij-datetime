@@ -18,8 +18,8 @@ struct State {
     now: Option<DateTime<FixedOffset>>,
     before_minute: u32,
     visible: bool,
-    mode_info: ModeInfo,
-    mode_update: bool,
+    style: Style,
+    style_update: bool,
     fg_color: PaletteColor,
     bg_color: PaletteColor,
     datetime_bg_color: PaletteColor,
@@ -63,9 +63,9 @@ impl ZellijPlugin for State {
                 }
             }
             Event::ModeUpdate(mode_info) => {
-                if self.mode_info != mode_info {
-                    self.mode_update = true;
-                    self.mode_info = mode_info;
+                if self.style != mode_info.style {
+                    self.style_update = true;
+                    self.style = mode_info.style;
                 }
             }
             _ => {}
@@ -76,10 +76,10 @@ impl ZellijPlugin for State {
 
     fn render(&mut self, _rows: usize, cols: usize) {
         // initialize cursol charctors
-        if self.mode_update {
+        if self.style_update {
             // pallet
-            self.fg_color = self.mode_info.style.colors.fg;
-            self.bg_color = self.mode_info.style.colors.bg;
+            self.fg_color = self.style.colors.fg;
+            self.bg_color = self.style.colors.bg;
             self.datetime_bg_color = PaletteColor::Rgb(DATETIME_BG_COLOR);
             let bg1 = self.bg_color;
             let bg2 = self.datetime_bg_color;
@@ -96,7 +96,7 @@ impl ZellijPlugin for State {
             self.sp_2.push_str(arrow);
             self.sp_3 = String::new();
             self.sp_3.push_str(arrow);
-            self.mode_update = false;
+            self.style_update = false;
         }
 
         if let Some(now) = self.now {
