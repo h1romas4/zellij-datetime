@@ -16,17 +16,16 @@ static INTERVAL_TIME: f64 = 1.0;
 #[derive(Default)]
 struct State {
     now: Option<DateTime<FixedOffset>>,
-    before_now: u32,
+    before_minute: u32,
     visible: bool,
     mode_info: ModeInfo,
     mode_update: bool,
-    pallet_fg: PaletteColor,
-    pallet_bg: PaletteColor,
+    fg_color: PaletteColor,
+    bg_color: PaletteColor,
     datetime_bg_color: PaletteColor,
-    lp_1: String,
-    lp_2: String,
-    lp_3: String,
-    padding: String,
+    sp_1: String,
+    sp_2: String,
+    sp_3: String,
 }
 register_plugin!(State);
 
@@ -34,7 +33,7 @@ impl ZellijPlugin for State {
     fn load(&mut self) {
         set_selectable(false);
         subscribe(&[EventType::Timer, EventType::Visible, EventType::ModeUpdate]);
-        self.before_now = u32::MAX;
+        self.before_minute = u32::MAX;
     }
 
     fn update(&mut self, event: Event) -> bool {
@@ -54,9 +53,9 @@ impl ZellijPlugin for State {
                 let now = Utc::now().with_timezone(&FixedOffset::east(TIMEZONE_OFFSET * 3600));
                 // render at 1 minute intervals.
                 let now_minute = now.minute();
-                if self.before_now != now_minute {
+                if self.before_minute != now_minute {
                     render = true;
-                    self.before_now = now_minute;
+                    self.before_minute = now_minute;
                     self.now = Some(now);
                 }
                 if self.visible {
@@ -79,24 +78,24 @@ impl ZellijPlugin for State {
         // initialize cursol charctors
         if self.mode_update {
             // pallet
-            self.pallet_fg = self.mode_info.style.colors.fg;
-            self.pallet_bg = self.mode_info.style.colors.bg;
+            self.fg_color = self.mode_info.style.colors.fg;
+            self.bg_color = self.mode_info.style.colors.bg;
             self.datetime_bg_color = PaletteColor::Rgb(DATETIME_BG_COLOR);
-            let bg1 = self.pallet_bg;
+            let bg1 = self.bg_color;
             let bg2 = self.datetime_bg_color;
             // create charctor
             let arrow = &style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string();
             let sep_1 = &style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string();
             let sep_2 = &style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string();
-            self.lp_1 = String::new();
-            self.lp_1.push_str(sep_1);
-            self.lp_1.push_str(arrow);
-            self.lp_2 = String::new();
-            self.lp_2.push_str(arrow);
-            self.lp_2.push_str(sep_2);
-            self.lp_2.push_str(arrow);
-            self.lp_3 = String::new();
-            self.lp_3.push_str(arrow);
+            self.sp_1 = String::new();
+            self.sp_1.push_str(sep_1);
+            self.sp_1.push_str(arrow);
+            self.sp_2 = String::new();
+            self.sp_2.push_str(arrow);
+            self.sp_2.push_str(sep_2);
+            self.sp_2.push_str(arrow);
+            self.sp_3 = String::new();
+            self.sp_3.push_str(arrow);
             self.mode_update = false;
         }
 
@@ -119,24 +118,27 @@ impl ZellijPlugin for State {
             // padding
             let width = date.len() + time.len() + 6;
             // There are cases where cols may be declared momentarily low at render time.
-            if cols as isize - width as isize > 0 {
+            let padding: String = if cols as isize - width as isize > 0 {
                 // only half width char
-                let padding = ARROW_SPACE.repeat(cols - width);
-                self.padding = style!(self.pallet_fg, self.pallet_bg)
-                    .paint(padding)
-                    .to_string();
+                let space = ARROW_SPACE.repeat(cols - width);
+                style!(self.fg_color, self.bg_color)
+                    .paint(space)
+                    .to_string()
             } else {
-                self.padding = String::new();
-            }
+                String::new()
+            };
 
             // render
-            let bg2 = self.datetime_bg_color;
-            let date = style!(self.pallet_fg, bg2).paint(&date).to_string();
-            let time = style!(self.pallet_fg, bg2).paint(&time).to_string();
+            let date = style!(self.fg_color, self.datetime_bg_color)
+                .paint(&date)
+                .to_string();
+            let time = style!(self.fg_color, self.datetime_bg_color)
+                .paint(&time)
+                .to_string();
 
             print!(
                 "{}{}{}{}{}{}",
-                self.padding, self.lp_1, date, self.lp_2, time, self.lp_3
+                padding, self.sp_1, date, self.sp_2, time, self.sp_3
             );
         }
     }
