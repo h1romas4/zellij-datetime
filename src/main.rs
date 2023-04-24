@@ -4,7 +4,7 @@ use zellij_tile_utils::style;
 
 // FIXME: UTC+9
 static TIMEZONE_OFFSET: i32 = 9;
-// Dark gray
+// FIXME: DateTime backgorund color
 static DATETIME_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
 
 static ARROW_SEPARATOR_1: &str = "";
@@ -33,11 +33,7 @@ register_plugin!(State);
 impl ZellijPlugin for State {
     fn load(&mut self) {
         set_selectable(false);
-        subscribe(&[
-            EventType::Timer,
-            EventType::Visible,
-            EventType::ModeUpdate,
-        ]);
+        subscribe(&[EventType::Timer, EventType::Visible, EventType::ModeUpdate]);
         self.before_now = u32::MAX;
     }
 
@@ -55,8 +51,7 @@ impl ZellijPlugin for State {
                 // TODO: suport timezone or add plugin setting
                 // Timezone may not be obtained by WASI.
                 // let now = Local::now();
-                let now = Utc::now()
-                    .with_timezone(&FixedOffset::east(TIMEZONE_OFFSET * 3600));
+                let now = Utc::now().with_timezone(&FixedOffset::east(TIMEZONE_OFFSET * 3600));
                 // render at 1 minute intervals.
                 let now_minute = now.minute();
                 if self.before_now != now_minute {
@@ -70,7 +65,6 @@ impl ZellijPlugin for State {
             }
             Event::ModeUpdate(mode_info) => {
                 if self.mode_info != mode_info {
-                    render = true;
                     self.mode_update = true;
                     self.mode_info = mode_info;
                 }
@@ -88,24 +82,21 @@ impl ZellijPlugin for State {
             self.pallet_fg = self.mode_info.style.colors.fg;
             self.pallet_bg = self.mode_info.style.colors.bg;
             self.datetime_bg_color = PaletteColor::Rgb(DATETIME_BG_COLOR);
-            // create line string
             let bg1 = self.pallet_bg;
             let bg2 = self.datetime_bg_color;
+            // create charctor
+            let arrow = &style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string();
+            let sep_1 = &style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string();
+            let sep_2 = &style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string();
             self.lp_1 = String::new();
-            self.lp_1
-                .push_str(&style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string());
-            self.lp_1
-                .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+            self.lp_1.push_str(sep_1);
+            self.lp_1.push_str(arrow);
             self.lp_2 = String::new();
-            self.lp_2
-                .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
-            self.lp_2
-                .push_str(&style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string());
-            self.lp_2
-                .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+            self.lp_2.push_str(arrow);
+            self.lp_2.push_str(sep_2);
+            self.lp_2.push_str(arrow);
             self.lp_3 = String::new();
-            self.lp_3
-                .push_str(&style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string());
+            self.lp_3.push_str(arrow);
             self.mode_update = false;
         }
 
@@ -131,7 +122,9 @@ impl ZellijPlugin for State {
             if cols as isize - width as isize > 0 {
                 // only half width char
                 let padding = ARROW_SPACE.repeat(cols - width);
-                self.padding = style!(self.pallet_fg, self.pallet_bg).paint(padding).to_string();
+                self.padding = style!(self.pallet_fg, self.pallet_bg)
+                    .paint(padding)
+                    .to_string();
             } else {
                 self.padding = String::new();
             }
