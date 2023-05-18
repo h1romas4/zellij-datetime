@@ -53,7 +53,7 @@ Development
 
 ```bash
 # If you don't have Zellij installed already
-cargo install zellij
+cargo install --locked zellij
 # Add Rust target wasm32-wasi
 rustup target add wasm32-wasi
 # Git clone
