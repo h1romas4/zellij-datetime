@@ -58,8 +58,8 @@ cargo install zellij
 rustup target add wasm32-wasi
 # Git clone
 git clone https://github.com/h1romas4/zellij-datetime
-# Building the plugin
 cd zellij-datetime
+# Building the plugin
 cargo build
 # Running in Zellij
 zellij -l plugin.kdl
