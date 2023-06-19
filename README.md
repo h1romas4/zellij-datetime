@@ -34,6 +34,7 @@ Preparation of Plug-in deployment destination:
 # create configration directory
 mkdir -p ~/.config/zellij/layouts/
 mkdir -p ~/.config/zellij/plugins/
+# If you have already created a layout file, you do not need to do the following.
 # export default layaut (Be careful not to overwrite your settings)
 zellij setup --dump-layout default > ~/.config/zellij/layouts/default.kdl
 ```
