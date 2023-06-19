@@ -37,6 +37,12 @@ zellij-tile = "^0.37"
 zellij-tile-utils = "^0.37"
 ```
 
+> https://zellij.dev/documentation/plugin-upgrading.html
+>
+> Upgrading a Plugin
+>
+> Since Zellij plugins using zellij-tile rely on shared data structures, currently one would need to compile a plugin against the corresponding zellij-tile package of the zellij version it is installed on.
+
 ## Setup Zellij plugin
 
 Preparation of Plug-in deployment destination:
