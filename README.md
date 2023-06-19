@@ -10,6 +10,15 @@ This plugin was created for my Zellij studies. For this reason, the time zone se
 
 Since it is a WebAssembly/WASI build, it will probably work in all environments, including amd64, Arm.
 
+## Require
+
+* Zellij `0.37`
+
+```
+$ zellij -V
+zellij 0.37.0
+```
+
 ## Setup Zellij plugin
 
 ```bash
