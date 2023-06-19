@@ -36,12 +36,11 @@ mkdir -p ~/.config/zellij/layouts/
 mkdir -p ~/.config/zellij/plugins/
 # export default layaut (Be careful not to overwrite your settings)
 zellij setup --dump-layout default > ~/.config/zellij/layouts/default.kdl
-# deploy plugin .wasm
-cd ~/.config/zellij/plugins/
 ```
 [Download zellij-datetime.wasm](https://github.com/h1romas4/zellij-datetime/releases/latest/download/zellij-datetime.wasm):
 
 ```bash
+cd ~/.config/zellij/plugins/
 # download datetime plugin
 wget -O zellij-datetime.wasm \
     https://github.com/h1romas4/zellij-datetime/releases/latest/download/zellij-datetime.wasm
