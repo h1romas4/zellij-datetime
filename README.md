@@ -28,6 +28,8 @@ zellij-tile-utils = "^0.37"
 
 ## Setup Zellij plugin
 
+Preparation of Plug-in deployment destination:
+
 ```bash
 # create configration directory
 mkdir -p ~/.config/zellij/layouts/
@@ -36,8 +38,12 @@ mkdir -p ~/.config/zellij/plugins/
 zellij setup --dump-layout default > ~/.config/zellij/layouts/default.kdl
 # deploy plugin .wasm
 cd ~/.config/zellij/plugins/
+```
+[Download zellij-datetime.wasm](https://github.com/h1romas4/zellij-datetime/releases/latest/download/zellij-datetime.wasm):
+
+```bash
 # download datetime plugin
-wget -O zellij-datetime.wasm https://github.com/h1romas4/zellij-datetime/releases/download/v0.6.0/zellij-datetime.wasm
+wget -O zellij-datetime.wasm https://github.com/h1romas4/zellij-datetime/releases/latest/download/zellij-datetime.wasm
 ```
 
 ## Usage
