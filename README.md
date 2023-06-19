@@ -43,7 +43,8 @@ cd ~/.config/zellij/plugins/
 
 ```bash
 # download datetime plugin
-wget -O zellij-datetime.wasm https://github.com/h1romas4/zellij-datetime/releases/latest/download/zellij-datetime.wasm
+wget -O zellij-datetime.wasm \
+    https://github.com/h1romas4/zellij-datetime/releases/latest/download/zellij-datetime.wasm
 ```
 
 ## Usage
