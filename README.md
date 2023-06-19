@@ -19,6 +19,13 @@ $ zellij -V
 zellij 0.37.0
 ```
 
+```
+$ cat Cargo.toml | grep -A 2 dependencies
+[dependencies]
+zellij-tile = "^0.37"
+zellij-tile-utils = "^0.37"
+```
+
 ## Setup Zellij plugin
 
 ```bash
