@@ -94,8 +94,6 @@ Development
 ```bash
 # If you don't have Zellij installed already
 cargo install --locked zellij
-# Add Rust target wasm32-wasi
-rustup target add wasm32-wasi
 # Git clone
 git clone https://github.com/h1romas4/zellij-datetime
 cd zellij-datetime
