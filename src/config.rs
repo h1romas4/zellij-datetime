@@ -10,7 +10,10 @@ impl Default for PluginConfig {
     fn default() -> Self {
         let default_timezone = "UTC";
         let mut timezone: LinkedHashMap<String, i32> = LinkedHashMap::new();
+        // default config
         timezone.insert(default_timezone.to_string(), 0);
+        timezone.insert("PST".to_string(), -8);
+        timezone.insert("JST".to_string(), 9);
         PluginConfig {
             timezone,
             default_timezone: default_timezone.to_string(),

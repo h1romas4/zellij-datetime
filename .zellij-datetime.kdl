@@ -1,7 +1,7 @@
 timezone {
     define "UTC" 0
-    define "JST" +9
     define "PST" -8
+    define "JST" +9
 }
 
 defalut_timezone "JST"

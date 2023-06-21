@@ -41,6 +41,7 @@ impl ZellijPlugin for State {
         if let Ok(setting) = fs::read_to_string("/host/.zellij-datetime.kdl") {
             self.config.load_config(&setting);
         };
+        // get default timezone in config gile
         self.timezone = self.config.get_defalut_timezone();
         self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
         // zellij plunin setting
@@ -60,10 +61,8 @@ impl ZellijPlugin for State {
                 self.visible = false;
             }
             Event::Timer(_t) => {
-                // TODO: suport timezone or add plugin setting
-                // Timezone may not be obtained by WASI.
-                // let now = Local::now();
-                let now = Utc::now().with_timezone(&FixedOffset::east(self.timezone_offset * 3600));
+                // get current time with timezone
+                let now = now(self.timezone_offset);
                 // render at 1 minute intervals.
                 let now_minute = now.minute();
                 if self.before_minute != now_minute {
@@ -84,8 +83,12 @@ impl ZellijPlugin for State {
             Event::Mouse(mouse) => {
                 match mouse {
                     Mouse::LeftClick(_size, _align) => {
+                        // change timezone
                         self.timezone = self.config.get_timezone_next(&self.timezone);
                         self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
+                        // get current time with timezone
+                        self.now = Some(now(self.timezone_offset));
+                        render = true;
                     },
                     Mouse::ScrollUp(_) => {},
                     Mouse::ScrollDown(_) => {},
@@ -173,4 +176,10 @@ impl ZellijPlugin for State {
             );
         }
     }
+}
+
+fn now(timezone_offset: i32) -> DateTime<FixedOffset> {
+    // Timezone may not be obtained by WASI.
+    // let now = Local::now();
+    Utc::now().with_timezone(&FixedOffset::east(timezone_offset * 3600))
 }
