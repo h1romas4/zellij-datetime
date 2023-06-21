@@ -1,11 +1,11 @@
 [package]
 name = "zellij-datetime"
-version = "0.6.1"
+version = "0.6.2"
 authors = ["h1romas4 <h1romas4@gmail.com>"]
 edition = "2021"
 
 [dependencies]
-zellij-tile = "0.37.1"
-zellij-tile-utils = "0.37.1"
+zellij-tile = "0.37.2"
+zellij-tile-utils = "0.37.2"
 ansi_term = "^0.12"
 chrono-wasi = "^0.4"

@@ -23,18 +23,18 @@ static DATETIME_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
 
 ## Require
 
-* Zellij `0.37.1`
+* Zellij `0.37.2`
 
 ```
 $ zellij -V
-zellij 0.37.1
+zellij 0.37.2
 ```
 
 ```
 $ cat Cargo.toml | grep -A 2 dependencies
 [dependencies]
-zellij-tile = "0.37.1"
-zellij-tile-utils = "0.37.1"
+zellij-tile = "0.37.2"
+zellij-tile-utils = "0.37.2"
 ```
 
 > https://zellij.dev/documentation/plugin-upgrading.html
