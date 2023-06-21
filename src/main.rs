@@ -41,7 +41,7 @@ impl ZellijPlugin for State {
         if let Ok(setting) = fs::read_to_string("/host/.zellij-datetime.kdl") {
             self.config.load_config(&setting);
         };
-        // get default timezone in config gile
+        // get default timezone in config file
         self.timezone = self.config.get_defalut_timezone();
         self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
         // zellij plunin setting
