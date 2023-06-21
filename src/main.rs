@@ -1,7 +1,7 @@
 mod config;
 
-use std::fs;
 use chrono::prelude::*;
+use std::fs;
 use zellij_tile::prelude::*;
 use zellij_tile_utils::style;
 
