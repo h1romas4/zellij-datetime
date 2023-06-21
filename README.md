@@ -80,9 +80,10 @@ layout {
 }
 ```
 
-## Configuration
+## Settings
 
 The time zone can be specified by placing `.zellij-datetime.kdl` in the Zellij startup directory.
+For example, If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
 
 ```
 timezone {
