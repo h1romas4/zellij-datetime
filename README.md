@@ -4,7 +4,7 @@
 
 This plugin adds a date and time pane to [Zellij](https://zellij.dev/), a terminal workspace.
 
-![zellij-01.png](https://raw.githubusercontent.com/h1romas4/zellij-datetime/main/docs/images/zellij-01.png)
+![zellij-04.png](https://raw.githubusercontent.com/h1romas4/zellij-datetime/main/docs/images/zellij-04.png)
 
 Since it is a WebAssembly/WASI build, it will probably work in all environments, including amd64, Arm.
 
