@@ -2747,10 +2747,12 @@ dependencies = [
 
 [[package]]
 name = "zellij-datetime"
-version = "0.6.2"
+version = "0.7.0"
 dependencies = [
  "ansi_term",
  "chrono-wasi",
+ "kdl",
+ "linked-hash-map",
  "zellij-tile",
  "zellij-tile-utils",
 ]

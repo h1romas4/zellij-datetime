@@ -8,18 +8,11 @@ This plugin adds a date and time pane to [Zellij](https://zellij.dev/), a termin
 
 Since it is a WebAssembly/WASI build, it will probably work in all environments, including amd64, Arm.
 
-## Introduction
+## WIP
 
-This plugin was created for my Zellij studies. For this reason, the time zone settings and color schemes are not yet implemented. If you need to make changes, please build this repository to get the modified .wasm.
-
-`src/main.rs`
-
-```rust
-// FIXME: UTC+9
-static TIMEZONE_OFFSET: i32 = 9;
-// FIXME: DateTime backgorund color
-static DATETIME_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
-```
+- [x] Support for changing time zone by clicking on a pane
+- [x] Support for time zone definition files.
+- [ ] Support for background color specification.
 
 ## Require
 
@@ -86,6 +79,22 @@ layout {
     }
 }
 ```
+
+## Configuration
+
+The time zone can be specified by placing `.zellij-datetime.kdl` in the Zellij startup directory.
+
+```
+timezone {
+    define "UTC" 0
+    define "PST" -8
+    define "JST" +9
+}
+
+defalut_timezone "JST"
+```
+
+The time zone to be displayed is changed by mouse clicking on the pane.
 
 ## Build
 
