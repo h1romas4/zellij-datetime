@@ -21,7 +21,6 @@ struct State {
     now: Option<DateTime<FixedOffset>>,
     timezone: String,
     timezone_offset: i32,
-    timezone_current_index: usize,
     before_minute: u32,
     visible: bool,
     style: Style,
@@ -32,21 +31,21 @@ struct State {
     sp_1: String,
     sp_2: String,
     sp_3: String,
-    setting: PluginConfig,
+    config: PluginConfig,
 }
 register_plugin!(State);
 
 impl ZellijPlugin for State {
     fn load(&mut self) {
-        // load setting
+        // load setting from config file
         if let Ok(setting) = fs::read_to_string("/host/.zellij-datetime.kdl") {
-            self.setting.load_config(&setting);
+            self.config.load_config(&setting);
         };
-        self.timezone = self.setting.get_defalut_timezone();
-        self.timezone_offset = self.setting.get_timezone(&self.timezone);
-
+        self.timezone = self.config.get_defalut_timezone();
+        self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
+        // zellij plunin setting
         set_selectable(false);
-        subscribe(&[EventType::Timer, EventType::Visible, EventType::ModeUpdate]);
+        subscribe(&[EventType::Timer, EventType::Visible, EventType::ModeUpdate, EventType::Mouse]);
         self.before_minute = u32::MAX;
     }
 
@@ -80,6 +79,19 @@ impl ZellijPlugin for State {
                 if self.style != mode_info.style {
                     self.style_update = true;
                     self.style = mode_info.style;
+                }
+            },
+            Event::Mouse(mouse) => {
+                match mouse {
+                    Mouse::LeftClick(_size, _align) => {
+                        self.timezone = self.config.get_timezone_next(&self.timezone);
+                        self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
+                    },
+                    Mouse::ScrollUp(_) => {},
+                    Mouse::ScrollDown(_) => {},
+                    Mouse::RightClick(_, _) => {},
+                    Mouse::Hold(_, _) => {},
+                    Mouse::Release(_, _) => {},
                 }
             }
             _ => {}

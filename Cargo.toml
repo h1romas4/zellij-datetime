@@ -10,3 +10,4 @@ zellij-tile-utils = "0.37.2"
 ansi_term = "^0.12"
 chrono-wasi = "^0.4"
 kdl = { version = "4.5.0" }
+linked-hash-map = "0.5.6"

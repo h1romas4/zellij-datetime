@@ -2752,6 +2752,7 @@ dependencies = [
  "ansi_term",
  "chrono-wasi",
  "kdl",
+ "linked-hash-map",
  "zellij-tile",
  "zellij-tile-utils",
 ]
