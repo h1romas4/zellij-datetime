@@ -89,6 +89,7 @@ For example, If you are running Zellij from `.bashrc`, it will be `~/.zellij-dat
 timezone {
     define "UTC" 0
     define "PST" -8
+    define "PDT" -7
     define "JST" +9
 }
 
