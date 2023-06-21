@@ -1,9 +1,12 @@
+mod config;
+
+use std::fs;
 use chrono::prelude::*;
 use zellij_tile::prelude::*;
 use zellij_tile_utils::style;
 
-// FIXME: UTC+9
-static TIMEZONE_OFFSET: i32 = 9;
+use crate::config::PluginConfig;
+
 // FIXME: DateTime backgorund color
 static DATETIME_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
 
@@ -16,6 +19,9 @@ static INTERVAL_TIME: f64 = 1.0;
 #[derive(Default)]
 struct State {
     now: Option<DateTime<FixedOffset>>,
+    timezone: String,
+    timezone_offset: i32,
+    timezone_current_index: usize,
     before_minute: u32,
     visible: bool,
     style: Style,
@@ -26,11 +32,19 @@ struct State {
     sp_1: String,
     sp_2: String,
     sp_3: String,
+    setting: PluginConfig,
 }
 register_plugin!(State);
 
 impl ZellijPlugin for State {
     fn load(&mut self) {
+        // load setting
+        if let Ok(setting) = fs::read_to_string("/host/.zellij-datetime.kdl") {
+            self.setting.load_config(&setting);
+        };
+        self.timezone = self.setting.get_defalut_timezone();
+        self.timezone_offset = self.setting.get_timezone(&self.timezone);
+
         set_selectable(false);
         subscribe(&[EventType::Timer, EventType::Visible, EventType::ModeUpdate]);
         self.before_minute = u32::MAX;
@@ -50,7 +64,7 @@ impl ZellijPlugin for State {
                 // TODO: suport timezone or add plugin setting
                 // Timezone may not be obtained by WASI.
                 // let now = Local::now();
-                let now = Utc::now().with_timezone(&FixedOffset::east(TIMEZONE_OFFSET * 3600));
+                let now = Utc::now().with_timezone(&FixedOffset::east(self.timezone_offset * 3600));
                 // render at 1 minute intervals.
                 let now_minute = now.minute();
                 if self.before_minute != now_minute {
@@ -100,6 +114,8 @@ impl ZellijPlugin for State {
         }
 
         if let Some(now) = self.now {
+            // timezone
+            let timezone = self.timezone.to_string();
             // date
             let date = format!(
                 "{year}-{month:02}-{day:02} {weekday}",
@@ -116,7 +132,7 @@ impl ZellijPlugin for State {
             );
 
             // padding
-            let width = date.len() + time.len() + 6;
+            let width = timezone.len() + date.len() + time.len() + 9;
             // There are cases where cols may be declared momentarily low at render time.
             let padding: String = if cols as isize - width as isize > 0 {
                 // only half width char
@@ -129,6 +145,9 @@ impl ZellijPlugin for State {
             };
 
             // render
+            let timezone = style!(self.fg_color, self.datetime_bg_color)
+                .paint(&timezone)
+                .to_string();
             let date = style!(self.fg_color, self.datetime_bg_color)
                 .paint(&date)
                 .to_string();
@@ -137,8 +156,8 @@ impl ZellijPlugin for State {
                 .to_string();
 
             print!(
-                "{}{}{}{}{}{}",
-                padding, self.sp_1, date, self.sp_2, time, self.sp_3
+                "{}{}{}{}{}{}{}{}",
+                padding, self.sp_1, timezone, self.sp_2, date, self.sp_2, time, self.sp_3
             );
         }
     }

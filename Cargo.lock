@@ -2751,6 +2751,7 @@ version = "0.6.2"
 dependencies = [
  "ansi_term",
  "chrono-wasi",
+ "kdl",
  "zellij-tile",
  "zellij-tile-utils",
 ]
