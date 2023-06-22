@@ -147,7 +147,7 @@ impl ZellijPlugin for State {
                 minute = now.minute(),
             );
 
-            // padding
+            // padding (TODO: Only half width characters are supported)
             let width = timezone.len() + date.len() + time.len() + 9;
             // There are cases where cols may be declared momentarily low at render time.
             let padding: String = if cols as isize - width as isize > 0 {
