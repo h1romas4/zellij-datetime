@@ -17,9 +17,8 @@ jobs:
     - name: Rust Toolchain Setup
       run: |
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-        rustup target add wasm32-wasi
 
     - name: Build
       run: |
         cargo build --release
-        ls -laF target/wasm32-wasi/release/
+        ls -laF target/wasm32-wasi/release/ | grep wasm
