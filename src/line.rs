@@ -55,7 +55,6 @@ impl Line {
             String::new()
         };
 
-        // create string
         let timezone = style!(self.fg_color, self.datetime_bg_color).paint(timezone);
         let date = style!(self.fg_color, self.datetime_bg_color).paint(date);
         let time = style!(self.fg_color, self.datetime_bg_color).paint(time);

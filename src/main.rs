@@ -21,7 +21,7 @@ struct State {
     before_minute: u32,
     visible: bool,
     style: Style,
-    style_update: bool,
+    update_style: bool,
     line: Line,
     config: Config,
 }
@@ -36,6 +36,8 @@ impl ZellijPlugin for State {
         // get default timezone in config
         self.timezone = self.config.get_defalut_timezone();
         self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
+        // for making minute comparisons
+        self.before_minute = u32::MAX;
         // zellij plunin setting
         set_selectable(false);
         subscribe(&[
@@ -44,7 +46,6 @@ impl ZellijPlugin for State {
             EventType::ModeUpdate,
             EventType::Mouse,
         ]);
-        self.before_minute = u32::MAX;
     }
 
     fn update(&mut self, event: Event) -> bool {
@@ -60,12 +61,12 @@ impl ZellijPlugin for State {
             Event::Timer(_t) => {
                 // get current time with timezone
                 let now = now(self.timezone_offset);
-                // render at 1 minute intervals.
+                // render at 1 minute intervals
                 let now_minute = now.minute();
                 if self.before_minute != now_minute {
-                    render = true;
                     self.before_minute = now_minute;
                     self.now = Some(now);
+                    render = true;
                 }
                 if self.visible {
                     set_timeout(INTERVAL_TIME);
@@ -73,8 +74,8 @@ impl ZellijPlugin for State {
             }
             Event::ModeUpdate(mode_info) => {
                 if self.style != mode_info.style {
-                    self.style_update = true;
                     self.style = mode_info.style;
+                    self.update_style = true;
                 }
             }
             Event::Mouse(mouse) => match mouse {
@@ -95,18 +96,15 @@ impl ZellijPlugin for State {
             },
             _ => {}
         }
-        // should render
         render
     }
 
     fn render(&mut self, _rows: usize, cols: usize) {
-        // update line style
-        if self.style_update {
+        if self.update_style {
             self.line.update_style(self.style, DATETIME_BG_COLOR);
         }
 
         if let Some(now) = self.now {
-            // format date
             let date = format!(
                 "{year}-{month:02}-{day:02} {weekday}",
                 year = now.year(),
@@ -114,13 +112,11 @@ impl ZellijPlugin for State {
                 day = now.day(),
                 weekday = now.weekday(),
             );
-            // format time
             let time = format!(
                 "{hour:02}:{minute:02}",
                 hour = now.hour(),
                 minute = now.minute(),
             );
-            // render
             print!("{}", self.line.render(cols, &self.timezone, &date, &time));
         }
     }
