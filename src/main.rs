@@ -21,7 +21,6 @@ struct State {
     before_minute: u32,
     visible: bool,
     style: Style,
-    update_style: bool,
     line: Line,
     config: Config,
 }
@@ -75,7 +74,7 @@ impl ZellijPlugin for State {
             Event::ModeUpdate(mode_info) => {
                 if self.style != mode_info.style {
                     self.style = mode_info.style;
-                    self.update_style = true;
+                    self.line.update_style(self.style, DATETIME_BG_COLOR);
                 }
             }
             Event::Mouse(mouse) => match mouse {
@@ -100,10 +99,6 @@ impl ZellijPlugin for State {
     }
 
     fn render(&mut self, _rows: usize, cols: usize) {
-        if self.update_style {
-            self.line.update_style(self.style, DATETIME_BG_COLOR);
-        }
-
         if let Some(now) = self.now {
             let date = format!(
                 "{year}-{month:02}-{day:02} {weekday}",
