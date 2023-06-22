@@ -96,6 +96,8 @@ timezone {
 defalut_timezone "JST"
 ```
 
+https://github.com/h1romas4/zellij-datetime/assets/4337664/bc6af70a-9211-44bc-aea6-8a9e54389070
+
 The timezone to be displayed is changed by mouse clicking on the pane.
 
 ## Build
