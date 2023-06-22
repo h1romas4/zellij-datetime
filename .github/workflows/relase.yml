@@ -11,7 +11,7 @@ jobs:
     permissions:
       contents: write
     steps:
-    - uses: ./.github/workflows/callee.yml
+    - uses: ./.github/workflows/build.yml
 
     - uses: ncipollo/release-action@v1
       with:
