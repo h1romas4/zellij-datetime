@@ -1,0 +1,19 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+    - uses: ./.github/workflows/callee.yml
+
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "target/wasm32-wasi/release/zellij-datetime.wasm"
+        token: ${{ secrets.GITHUB_TOKEN }}
