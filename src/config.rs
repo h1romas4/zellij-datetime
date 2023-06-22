@@ -1,12 +1,12 @@
 use kdl::KdlDocument;
 use linked_hash_map::LinkedHashMap;
 
-pub struct PluginConfig {
+pub struct Config {
     timezone: LinkedHashMap<String, i32>,
     default_timezone: String,
 }
 
-impl Default for PluginConfig {
+impl Default for Config {
     fn default() -> Self {
         let default_timezone = "UTC";
         let mut timezone: LinkedHashMap<String, i32> = LinkedHashMap::new();
@@ -14,14 +14,14 @@ impl Default for PluginConfig {
         timezone.insert(default_timezone.to_string(), 0);
         timezone.insert("PDT".to_string(), -7);
         timezone.insert("JST".to_string(), 9);
-        PluginConfig {
+        Config {
             timezone,
             default_timezone: default_timezone.to_string(),
         }
     }
 }
 
-impl PluginConfig {
+impl Config {
     pub fn get_defalut_timezone(&self) -> String {
         self.default_timezone.to_string()
     }

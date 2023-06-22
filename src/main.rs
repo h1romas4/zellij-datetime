@@ -5,7 +5,7 @@ use chrono::prelude::*;
 use std::fs;
 use zellij_tile::prelude::*;
 
-use crate::config::PluginConfig;
+use crate::config::Config;
 use crate::line::Line;
 
 // FIXME: DateTime backgorund color
@@ -23,7 +23,7 @@ struct State {
     style: Style,
     style_update: bool,
     line: Line,
-    config: PluginConfig,
+    config: Config,
 }
 register_plugin!(State);
 
