@@ -1,6 +1,6 @@
 # zellij-datetime
 
-![](https://github.com/h1romas4/zellij-datetime/workflows/Build/badge.svg)
+![](https://github.com/h1romas4/zellij-datetime/workflows/Release/badge.svg) ![](https://github.com/h1romas4/zellij-datetime/workflows/Build/badge.svg)
 
 This plugin adds a date and time pane to [Zellij](https://zellij.dev/), a terminal workspace.
 
