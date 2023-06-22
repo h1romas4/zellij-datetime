@@ -1,6 +1,6 @@
 [package]
 name = "zellij-datetime"
-version = "0.10.0"
+version = "0.11.0"
 authors = ["h1romas4 <h1romas4@gmail.com>"]
 edition = "2021"
 
@@ -11,3 +11,6 @@ ansi_term = "^0.12"
 chrono-wasi = "^0.4"
 kdl = { version = "4.5.0" }
 linked-hash-map = "0.5.6"
+
+[profile.release]
+lto = true

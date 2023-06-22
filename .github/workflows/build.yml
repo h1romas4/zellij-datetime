@@ -20,17 +20,25 @@ jobs:
         path: |
           ~/.rustup
           ~/.cargo
-        key: ${{ runner.os }}-rust-1.69
+        key: ${{ runner.os }}-rust-1.69-opt
 
     - name: Rust Toolchain Setup
       if: steps.cache-toolchaine.outputs.cache-hit != 'true'
       run: |
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        cargo install wasm-snip
 
     - name: Build
       run: |
         # respect target from rust-toolchain and .cargo/config
         cargo build --release
+
+    - name: Optimize
+      run: |
+        TARGET=target/wasm32-wasi/release/zellij-datetime.wasm
+        wasm-snip ${TARGET} -o ${TARGET}.snip.wasm
+        rm ${TARGET}
+        mv ${TARGET}.snip.wasm ${TARGET}
 
     - name: Check
       run: |
