@@ -14,7 +14,16 @@ jobs:
         submodules: recursive
         token: ${{secrets.GITHUB_TOKEN}}
 
+    - uses: actions/cache@v3
+      id: cache-toolchaine
+      with:
+        path: |
+          ~/.rustup
+          ~/.cargo
+        key: ${{ runner.os }}-rust-1.69
+
     - name: Rust Toolchain Setup
+      if: steps.cache-toolchaine.outputs.cache-hit != 'true'
       run: |
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
