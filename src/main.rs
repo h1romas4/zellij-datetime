@@ -134,11 +134,11 @@ impl State {
     }
 
     fn change_timezone_next(&mut self) {
-        self.change_timezone(self.config.get_timezone_next(&self.timezone));
+        self.change_timezone(self.config.get_next_timezone(&self.timezone));
     }
 
     fn change_timezone_prev(&mut self) {
-        self.change_timezone(self.config.get_timezone_prev(&self.timezone));
+        self.change_timezone(self.config.get_prev_timezone(&self.timezone));
     }
 }
 

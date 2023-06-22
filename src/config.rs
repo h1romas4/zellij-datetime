@@ -26,7 +26,7 @@ impl Config {
         self.default_timezone.to_string()
     }
 
-    pub fn get_timezone_next(&self, timezone: &str) -> String {
+    pub fn get_next_timezone(&self, timezone: &str) -> String {
         let mut iter = self.timezone.keys();
         let mut next = None;
         while let Some(k) = iter.next() {
@@ -41,7 +41,7 @@ impl Config {
         timezone.to_string()
     }
 
-    pub fn get_timezone_prev(&self, timezone: &str) -> String {
+    pub fn get_prev_timezone(&self, timezone: &str) -> String {
         let mut prev = None;
         for k in self.timezone.keys() {
             if k == timezone {
