@@ -83,18 +83,19 @@ impl ZellijPlugin for State {
             Event::Mouse(mouse) => {
                 match mouse {
                     Mouse::LeftClick(_size, _align) => {
-                        // change timezone
-                        self.timezone = self.config.get_timezone_next(&self.timezone);
-                        self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
-                        // get current time with timezone
-                        self.now = Some(now(self.timezone_offset));
+                        self.change_timezone_next();
                         render = true;
                     },
-                    Mouse::ScrollUp(_) => {},
-                    Mouse::ScrollDown(_) => {},
                     Mouse::RightClick(_, _) => {},
-                    Mouse::Hold(_, _) => {},
-                    Mouse::Release(_, _) => {},
+                    Mouse::ScrollUp(_) => {
+                        self.change_timezone_prev();
+                        render = true;
+                    },
+                    Mouse::ScrollDown(_) => {
+                        self.change_timezone_next();
+                        render = true;
+                    },
+                    _ => {}
                 }
             }
             _ => {}
@@ -175,6 +176,22 @@ impl ZellijPlugin for State {
                 padding, self.sp_1, timezone, self.sp_2, date, self.sp_2, time, self.sp_3
             );
         }
+    }
+}
+
+impl State {
+    fn change_timezone(&mut self, timezone: String) {
+        self.timezone = timezone;
+        self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
+        self.now = Some(now(self.timezone_offset));
+    }
+
+    fn change_timezone_next(&mut self) {
+        self.change_timezone(self.config.get_timezone_next(&self.timezone));
+    }
+
+    fn change_timezone_prev(&mut self) {
+        self.change_timezone(self.config.get_timezone_prev(&self.timezone));
     }
 }
 

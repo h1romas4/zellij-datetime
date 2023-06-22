@@ -10,8 +10,8 @@ Since it is a WebAssembly/WASI build, it will probably work in all environments,
 
 ## WIP
 
-- [x] Support for changing time zone by clicking on a pane
-- [x] Support for time zone definition files.
+- [x] Support for changing timezone by click or scroll on a pane
+- [x] Support for timezone definition files.
 - [ ] Support for background color specification.
 
 ## Require
@@ -82,7 +82,7 @@ layout {
 
 ## Settings
 
-The time zone can be specified by placing `.zellij-datetime.kdl` in the Zellij startup directory.
+The timezone can be specified by placing `.zellij-datetime.kdl` in the Zellij startup directory.
 For example, If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
 
 ```
@@ -96,7 +96,7 @@ timezone {
 defalut_timezone "JST"
 ```
 
-The time zone to be displayed is changed by mouse clicking on the pane.
+The timezone to be displayed is changed by mouse clicking on the pane.
 
 ## Build
 

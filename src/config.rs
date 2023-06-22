@@ -27,18 +27,33 @@ impl PluginConfig {
     }
 
     pub fn get_timezone_next(&self, timezone: &str) -> String {
-        let mut iter = self.timezone.iter();
-        let mut next_timezone = None;
-        while let Some((key, _v)) = iter.next() {
-            if key == timezone {
-                next_timezone = iter.next().map(|(k, _)| k);
+        let mut iter = self.timezone.keys();
+        let mut next = None;
+        while let Some(k) = iter.next() {
+            if k == timezone {
+                next = iter.next();
             }
         }
-        let next_timezone = match next_timezone {
-            Some(timezone) => timezone,
+        let timezone = match next {
+            Some(next) => next,
             None => self.timezone.keys().next().unwrap(), // first key
         };
-        next_timezone.to_string()
+        timezone.to_string()
+    }
+
+    pub fn get_timezone_prev(&self, timezone: &str) -> String {
+        let mut prev = None;
+        for k in self.timezone.keys() {
+            if k == timezone {
+                break;
+            }
+            prev = Some(k);
+        }
+        let timezone = match prev {
+            Some(prev) => prev,
+            None => self.timezone.keys().last().unwrap() , // last key
+        };
+        timezone.to_string()
     }
 
     pub fn get_timezone_offset(&self, timezone: &str) -> i32 {
