@@ -46,7 +46,12 @@ impl ZellijPlugin for State {
         self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
         // zellij plunin setting
         set_selectable(false);
-        subscribe(&[EventType::Timer, EventType::Visible, EventType::ModeUpdate, EventType::Mouse]);
+        subscribe(&[
+            EventType::Timer,
+            EventType::Visible,
+            EventType::ModeUpdate,
+            EventType::Mouse,
+        ]);
         self.before_minute = u32::MAX;
     }
 
@@ -79,25 +84,23 @@ impl ZellijPlugin for State {
                     self.style_update = true;
                     self.style = mode_info.style;
                 }
-            },
-            Event::Mouse(mouse) => {
-                match mouse {
-                    Mouse::LeftClick(_size, _align) => {
-                        self.change_timezone_next();
-                        render = true;
-                    },
-                    Mouse::RightClick(_, _) => {},
-                    Mouse::ScrollUp(_) => {
-                        self.change_timezone_prev();
-                        render = true;
-                    },
-                    Mouse::ScrollDown(_) => {
-                        self.change_timezone_next();
-                        render = true;
-                    },
-                    _ => {}
-                }
             }
+            Event::Mouse(mouse) => match mouse {
+                Mouse::LeftClick(_size, _align) => {
+                    self.change_timezone_next();
+                    render = true;
+                }
+                Mouse::RightClick(_, _) => {}
+                Mouse::ScrollUp(_) => {
+                    self.change_timezone_prev();
+                    render = true;
+                }
+                Mouse::ScrollDown(_) => {
+                    self.change_timezone_next();
+                    render = true;
+                }
+                _ => {}
+            },
             _ => {}
         }
         // should render
@@ -147,8 +150,12 @@ impl ZellijPlugin for State {
                 minute = now.minute(),
             );
 
-            // padding (TODO: Only half width characters are supported)
-            let width = timezone.len() + date.len() + time.len() + 9;
+            // padding (support full width)
+            let timezone_len = timezone
+                .chars()
+                .map(|c| if c.is_ascii() { 1 } else { 2 })
+                .sum::<usize>();
+            let width = timezone_len + date.len() + time.len() + 9;
             // There are cases where cols may be declared momentarily low at render time.
             let padding: String = if cols as isize - width as isize > 0 {
                 let space = ARROW_SPACE.repeat(cols - width);
