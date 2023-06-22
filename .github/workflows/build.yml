@@ -29,5 +29,12 @@ jobs:
 
     - name: Build
       run: |
+        # respect target from rust-toolchain and .cargo/config
         cargo build --release
-        ls -laF target/wasm32-wasi/release/ | grep wasm
+
+    - name: Check
+      run: |
+        TARGET=target/wasm32-wasi/release/zellij-datetime.wasm
+        ls -laF ${TARGET}
+        file ${TARGET}
+        md5sum ${TARGET}
