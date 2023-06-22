@@ -151,7 +151,6 @@ impl ZellijPlugin for State {
             let width = timezone.len() + date.len() + time.len() + 9;
             // There are cases where cols may be declared momentarily low at render time.
             let padding: String = if cols as isize - width as isize > 0 {
-                // only half width char
                 let space = ARROW_SPACE.repeat(cols - width);
                 style!(self.fg_color, self.bg_color)
                     .paint(space)
