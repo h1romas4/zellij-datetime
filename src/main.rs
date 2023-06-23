@@ -15,7 +15,7 @@ static INTERVAL_TIME: f64 = 1.0;
 
 #[derive(Default)]
 struct State {
-    now: Option<DateTime<FixedOffset>>,
+    now: Option<DateTime<Utc>>,
     timezone: String,
     timezone_offset: i32,
     before_minute: u32,
@@ -59,7 +59,7 @@ impl ZellijPlugin for State {
             }
             Event::Timer(_t) => {
                 // get current time with timezone
-                let now = now(self.timezone_offset);
+                let now = now();
                 // render at 1 minute intervals
                 let now_minute = now.minute();
                 if self.before_minute != now_minute {
@@ -99,7 +99,7 @@ impl ZellijPlugin for State {
     }
 
     fn render(&mut self, _rows: usize, cols: usize) {
-        if let Some(now) = self.now {
+        if let Some(now) = self.now() {
             let date = format!(
                 "{year}-{month:02}-{day:02} {weekday}",
                 year = now.year(),
@@ -121,7 +121,6 @@ impl State {
     fn change_timezone(&mut self, timezone: String) {
         self.timezone = timezone;
         self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
-        self.now = Some(now(self.timezone_offset));
     }
 
     fn change_timezone_next(&mut self) {
@@ -131,10 +130,15 @@ impl State {
     fn change_timezone_prev(&mut self) {
         self.change_timezone(self.config.get_prev_timezone(&self.timezone));
     }
+
+    fn now(&self) -> Option<DateTime<FixedOffset>> {
+        self.now
+            .map(|now| now.with_timezone(&FixedOffset::east(&self.timezone_offset * 3600)))
+    }
 }
 
-fn now(timezone_offset: i32) -> DateTime<FixedOffset> {
+fn now() -> DateTime<Utc> {
     // Timezone may not be obtained by WASI.
     // let now = Local::now();
-    Utc::now().with_timezone(&FixedOffset::east(timezone_offset * 3600))
+    Utc::now()
 }
