@@ -8,7 +8,7 @@ This plugin adds a date and time pane to [Zellij](https://zellij.dev/), a termin
 
 Since it is a WebAssembly/WASI build, it will probably work in all environments, including amd64, Arm.
 
-## Known Issues
+## WIP
 
 - [x] Support for changing timezone by click or scroll on a pane
 - [x] Support for timezone definition files.
