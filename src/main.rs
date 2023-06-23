@@ -50,12 +50,15 @@ impl ZellijPlugin for State {
     fn update(&mut self, event: Event) -> bool {
         let mut render: bool = false;
         match event {
-            Event::Visible(true) => {
-                set_timeout(0.0);
-                self.visible = true;
-            }
-            Event::Visible(false) => {
-                self.visible = false;
+            Event::Visible(visible) => {
+                // TODO:
+                // If the Zellij session is detached, it is called with false,
+                // but if it is reattached, this event is not fired.
+                // Working on a way to restart the timer when it is reattached.
+                if visible {
+                    set_timeout(0.0);
+                }
+                self.visible = visible;
             }
             Event::Timer(_t) => {
                 // get current time with timezone
@@ -92,7 +95,7 @@ impl ZellijPlugin for State {
                     render = true;
                 }
                 _ => {}
-            },
+            }
             _ => {}
         }
         render
