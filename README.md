@@ -10,9 +10,10 @@ Since it is a WebAssembly/WASI build, it will probably work in all environments,
 
 ## WIP
 
-- [x] Support for changing timezone by click or scroll on a pane
+- [x] Support for changing timezone by click or scroll on a pane.
 - [x] Support for timezone definition files.
-- [x] Binary size reduction
+- [x] Binary size reduction.
+- [ ] Improved parsing of configuration files.
 - [ ] Support for background color specification.
 - [ ] When a Zellij session is detached and reattached, the plugin stops without getting drawing and timer events.
 - [ ] Unnecessary borderlines appear when this plugin is placed at the bottom of the workspace with borderless=true.
