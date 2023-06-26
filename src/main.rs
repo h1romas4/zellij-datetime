@@ -146,7 +146,7 @@ impl State {
         let now = self.now();
         if let Some(now) = now {
             let datetime = format!(
-                "{year}{month:02}{day:02} {hour:02}{minute:02}",
+                "{year}{month:02}{day:02}_{hour:02}{minute:02}",
                 year = now.year(),
                 month = now.month(),
                 day = now.day(),
