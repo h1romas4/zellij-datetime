@@ -6,13 +6,15 @@ on:
       - '*'
 
 jobs:
+  compile:
+    uses: ./.github/workflows/compile.yml
+
   release:
+    needs: compile
     runs-on: ubuntu-22.04
     permissions:
       contents: write
     steps:
-    - uses: ./.github/workflows/compile.yml
-
     - uses: ncipollo/release-action@v1
       with:
         artifacts: "target/wasm32-wasi/release/zellij-datetime.wasm"
