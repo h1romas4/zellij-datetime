@@ -84,7 +84,8 @@ layout {
 }
 ```
 
-You can select the time zone to be displayed with a left mouse click. You can also insert a date/time string with a left mouse click.
+- Timezone can be selected by left mouse click or scrolling.
+- Insert a date/time string into the pane with a right mouse click.
 
 https://github.com/h1romas4/zellij-datetime/assets/4337664/6ba30ce8-f1c5-4c32-9d00-18e2224b4c37
 
