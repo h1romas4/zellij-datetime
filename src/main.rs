@@ -8,9 +8,6 @@ use zellij_tile::prelude::*;
 use crate::config::Config;
 use crate::line::Line;
 
-// FIXME: DateTime backgorund color
-static DATETIME_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
-
 static INTERVAL_TIME: f64 = 1.0;
 
 #[derive(Default)]
@@ -77,7 +74,8 @@ impl ZellijPlugin for State {
             Event::ModeUpdate(mode_info) => {
                 if self.style != mode_info.style {
                     self.style = mode_info.style;
-                    self.line.update_style(self.style, DATETIME_BG_COLOR);
+                    self.line
+                        .update_style(self.style, self.config.get_backgound_color());
                 }
             }
             Event::Mouse(mouse) => match mouse {
@@ -98,7 +96,7 @@ impl ZellijPlugin for State {
                     render = true;
                 }
                 _ => {}
-            }
+            },
             _ => {}
         }
         render
@@ -118,7 +116,7 @@ impl ZellijPlugin for State {
                 hour = now.hour(),
                 minute = now.minute(),
             );
-            print!("{}", self.line.render(cols, &self.timezone, &date, &time));
+            print!("{}", self.line.create(cols, &self.timezone, &date, &time));
         }
     }
 }

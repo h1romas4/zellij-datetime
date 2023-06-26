@@ -1,6 +1,6 @@
 [package]
 name = "zellij-datetime"
-version = "0.15.0"
+version = "0.16.0"
 authors = ["h1romas4 <h1romas4@gmail.com>"]
 edition = "2021"
 
@@ -9,8 +9,9 @@ zellij-tile = "0.37.2"
 zellij-tile-utils = "0.37.2"
 ansi_term = "^0.12"
 chrono-wasi = "^0.4"
-kdl = { version = "4.5.0" }
-linked-hash-map = "0.5.6"
+kdl = { version = "^4.5" }
+linked-hash-map = "^0.5"
+csscolorparser = "^0.6"
 
 [profile.release]
 lto = true

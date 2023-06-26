@@ -10,9 +10,7 @@ pub struct Line {
     fg_color: PaletteColor,
     bg_color: PaletteColor,
     datetime_bg_color: PaletteColor,
-    sp_1: String,
-    sp_2: String,
-    sp_3: String,
+    separator: (String, String, String),
 }
 
 impl Line {
@@ -22,23 +20,24 @@ impl Line {
         self.bg_color = style.colors.bg;
         self.datetime_bg_color = PaletteColor::Rgb(datetime_bg_color);
         // create charctor
-        let bg1 = self.bg_color;
-        let bg2 = self.datetime_bg_color;
-        let arrow = &style!(bg2, bg2).bold().paint(ARROW_SPACE).to_string();
-        let sep_1 = &style!(bg2, bg1).bold().paint(ARROW_SEPARATOR_1).to_string();
-        let sep_2 = &style!(bg1, bg2).bold().paint(ARROW_SEPARATOR_2).to_string();
-        self.sp_1 = String::new();
-        self.sp_1.push_str(sep_1);
-        self.sp_1.push_str(arrow);
-        self.sp_2 = String::new();
-        self.sp_2.push_str(arrow);
-        self.sp_2.push_str(sep_2);
-        self.sp_2.push_str(arrow);
-        self.sp_3 = String::new();
-        self.sp_3.push_str(arrow);
+        let bg_1 = self.bg_color;
+        let bg_2 = self.datetime_bg_color;
+        let arrow = &style!(bg_2, bg_2).bold().paint(ARROW_SPACE).to_string();
+        let sep_1 = &style!(bg_2, bg_1).bold().paint(ARROW_SEPARATOR_1).to_string();
+        let sep_2 = &style!(bg_1, bg_2).bold().paint(ARROW_SEPARATOR_2).to_string();
+        let mut sp_0 = String::new();
+        sp_0.push_str(sep_1);
+        sp_0.push_str(arrow);
+        let mut sp_1 = String::new();
+        sp_1.push_str(arrow);
+        sp_1.push_str(sep_2);
+        sp_1.push_str(arrow);
+        let mut sp_2 = String::new();
+        sp_2.push_str(arrow);
+        self.separator = (sp_0, sp_1, sp_2);
     }
 
-    pub fn render(&self, cols: usize, timezone: &str, date: &str, time: &str) -> String {
+    pub fn create(&self, cols: usize, timezone: &str, date: &str, time: &str) -> String {
         // padding (support full width)
         let timezone_len = timezone
             .chars()
@@ -61,7 +60,14 @@ impl Line {
 
         format!(
             "{}{}{}{}{}{}{}{}",
-            padding, self.sp_1, timezone, self.sp_2, date, self.sp_2, time, self.sp_3
+            padding,
+            self.separator.0,
+            timezone,
+            self.separator.1,
+            date,
+            self.separator.1,
+            time,
+            self.separator.2
         )
     }
 }

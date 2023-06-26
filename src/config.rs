@@ -1,9 +1,13 @@
+use csscolorparser::Color;
 use kdl::KdlDocument;
 use linked_hash_map::LinkedHashMap;
+
+static DEFALUT_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
 
 pub struct Config {
     timezone: LinkedHashMap<String, i32>,
     default_timezone: String,
+    backgound_color: (u8, u8, u8),
 }
 
 impl Default for Config {
@@ -17,6 +21,7 @@ impl Default for Config {
         Config {
             timezone,
             default_timezone: default_timezone.to_string(),
+            backgound_color: DEFALUT_BG_COLOR,
         }
     }
 }
@@ -51,7 +56,7 @@ impl Config {
         }
         let timezone = match prev {
             Some(prev) => prev,
-            None => self.timezone.keys().last().unwrap() , // last key
+            None => self.timezone.keys().last().unwrap(), // last key
         };
         timezone.to_string()
     }
@@ -63,10 +68,14 @@ impl Config {
         }
     }
 
+    pub fn get_backgound_color(&self) -> (u8, u8, u8) {
+        self.backgound_color
+    }
+
     pub fn load_config(&mut self, setting: &str) {
         let mut config_timezone: LinkedHashMap<String, i32> = LinkedHashMap::new();
         if let Ok(doc) = setting.parse::<KdlDocument>() {
-            // timezone tree (TODO: using KQL)
+            // timezone tree (TODO: using KQL or macro)
             if let Some(timezone) = doc.get("timezone") {
                 if let Some(children) = timezone.children() {
                     for node in children.nodes() {
@@ -93,6 +102,18 @@ impl Config {
                 } else {
                     // first key
                     self.default_timezone = self.timezone.keys().next().unwrap().to_string();
+                }
+            }
+            // backgound color
+            if let Some(backgound_color) = doc.get_arg("background_color") {
+                if let Ok(color) = backgound_color
+                    .to_string()
+                    .replace('"', "")
+                    .trim()
+                    .parse::<Color>()
+                {
+                    let color = color.to_rgba8();
+                    self.backgound_color = (color[0], color[1], color[2]);
                 }
             }
         }
