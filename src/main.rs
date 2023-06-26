@@ -85,7 +85,10 @@ impl ZellijPlugin for State {
                     self.change_timezone_next();
                     render = true;
                 }
-                Mouse::RightClick(_, _) => {}
+                Mouse::RightClick(_, _) => {
+                    // write characters to the STDIN of the focused pane
+                    self.write_now();
+                }
                 Mouse::ScrollUp(_) => {
                     self.change_timezone_prev();
                     render = true;
@@ -137,6 +140,21 @@ impl State {
     fn now(&self) -> Option<DateTime<FixedOffset>> {
         self.now
             .map(|now| now.with_timezone(&FixedOffset::east(&self.timezone_offset * 3600)))
+    }
+
+    fn write_now(&self) {
+        let now = self.now();
+        if let Some(now) = now {
+            let datetime = format!(
+                "{year}{month:02}{day:02} {hour:02}{minute:02}",
+                year = now.year(),
+                month = now.month(),
+                day = now.day(),
+                hour = now.hour(),
+                minute = now.minute(),
+            );
+            write_chars(&datetime);
+        }
     }
 }
 
