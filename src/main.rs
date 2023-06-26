@@ -143,8 +143,7 @@ impl State {
     }
 
     fn write_now(&self) {
-        let now = self.now();
-        if let Some(now) = now {
+        if let Some(now) = self.now() {
             let datetime = format!(
                 "{year}{month:02}{day:02}_{hour:02}{minute:02}",
                 year = now.year(),
