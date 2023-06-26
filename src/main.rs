@@ -153,7 +153,7 @@ impl State {
                 hour = now.hour(),
                 minute = now.minute(),
             );
-            write_chars(&datetime);
+            write(datetime.into_bytes());
         }
     }
 }
