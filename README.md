@@ -91,25 +91,25 @@ https://github.com/h1romas4/zellij-datetime/assets/4337664/6ba30ce8-f1c5-4c32-9d
 
 ## Settings
 
-The timezone can be specified by placing `.zellij-datetime.kdl` in the Zellij startup directory.
-For example, If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
+Place the configuration file `.zellij-datetime.kdl` in the Zellij startup directory.If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
+
+### Timezone
 
 ```
 timezone {
     define "UTC" 0
-    define "PST" -8
     define "PDT" -7
     define "JST" +9
 }
 
 defalut_timezone "JST"
-
-background_color "#202020"
 ```
 
-https://github.com/h1romas4/zellij-datetime/assets/4337664/bc6af70a-9211-44bc-aea6-8a9e54389070
+### Color
 
-The timezone to be displayed is changed by mouse clicking on the pane.
+```
+background_color "#202020"
+```
 
 ## Build
 
