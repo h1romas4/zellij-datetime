@@ -61,7 +61,7 @@ impl ZellijPlugin for State {
                 self.visible = visible;
             }
             Event::Timer(_t) => {
-                // get current time with timezone
+                // get current time without timezone
                 let now = now();
                 // render at 1 minute intervals
                 let now_minute = now.minute();
