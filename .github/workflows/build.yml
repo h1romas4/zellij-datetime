@@ -6,43 +6,5 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: recursive
-        token: ${{secrets.GITHUB_TOKEN}}
-
-    - uses: actions/cache@v3
-      id: cache-toolchaine
-      with:
-        path: |
-          ~/.rustup
-          ~/.cargo
-        key: ${{ runner.os }}-rust-1.69-opt
-
-    - name: Rust Toolchain Setup
-      if: steps.cache-toolchaine.outputs.cache-hit != 'true'
-      run: |
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-        cargo install wasm-snip
-
-    - name: Build
-      run: |
-        # respect target from rust-toolchain and .cargo/config
-        cargo build --release
-
-    - name: Optimize
-      run: |
-        TARGET=target/wasm32-wasi/release/zellij-datetime.wasm
-        wasm-snip ${TARGET} -o ${TARGET}.snip.wasm
-        rm ${TARGET}
-        mv ${TARGET}.snip.wasm ${TARGET}
-
-    - name: Check
-      run: |
-        TARGET=target/wasm32-wasi/release/zellij-datetime.wasm
-        ls -laF ${TARGET}
-        file ${TARGET} | grep WebAssembly
-        md5sum ${TARGET}
+  compile:
+    uses: ./.github/workflows/compile.yml
