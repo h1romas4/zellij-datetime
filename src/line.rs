@@ -37,7 +37,7 @@ impl Line {
         self.separator = (sp_0, sp_1, sp_2);
     }
 
-    pub fn render(&self, cols: usize, timezone: &str, date: &str, time: &str) -> String {
+    pub fn create(&self, cols: usize, timezone: &str, date: &str, time: &str) -> String {
         // padding (support full width)
         let timezone_len = timezone
             .chars()

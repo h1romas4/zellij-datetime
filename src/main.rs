@@ -118,7 +118,7 @@ impl ZellijPlugin for State {
                 hour = now.hour(),
                 minute = now.minute(),
             );
-            print!("{}", self.line.render(cols, &self.timezone, &date, &time));
+            print!("{}", self.line.create(cols, &self.timezone, &date, &time));
         }
     }
 }
