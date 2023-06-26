@@ -53,7 +53,7 @@ jobs:
         md5sum ${TARGET}
 
     - uses: ncipollo/release-action@v1
-      if: env.RELEASE == true
+      if: env.RELEASE == 'true'
       with:
         artifacts: "target/wasm32-wasi/release/zellij-datetime.wasm"
         token: ${{ secrets.GITHUB_TOKEN }}

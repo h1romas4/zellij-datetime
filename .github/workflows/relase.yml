@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  compile:
+  release:
     uses: ./.github/workflows/build-release.yml
     with:
       release: true

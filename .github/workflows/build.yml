@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  compile:
+  build:
     uses: ./.github/workflows/build-release.yml
     with:
       release: false
