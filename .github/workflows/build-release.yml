@@ -1,10 +1,17 @@
-name: Compile
+name: Build-Release
 
 on:
   workflow_call:
+    inputs:
+      release:
+        description: 'release'
+        type: boolean
+        required: true
+env:
+  RELEASE: ${inputs.release}
 
 jobs:
-  compile:
+  build:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v1
@@ -44,3 +51,9 @@ jobs:
         ls -laF ${TARGET}
         file ${TARGET} | grep WebAssembly
         md5sum ${TARGET}
+
+    - uses: ncipollo/release-action@v1
+      if: env.RELEASE == true
+      with:
+        artifacts: "target/wasm32-wasi/release/zellij-datetime.wasm"
+        token: ${{ secrets.GITHUB_TOKEN }}
