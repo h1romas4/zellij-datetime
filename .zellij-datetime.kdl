@@ -5,3 +5,5 @@ timezone {
 }
 
 defalut_timezone "JST"
+
+background_color "#202020"

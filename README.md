@@ -14,7 +14,7 @@ Since it is a WebAssembly/WASI build, it will probably work in all environments,
 - [x] Support for timezone definition files.
 - [x] Binary size reduction.
 - [ ] Improved parsing of configuration files.
-- [ ] Support for background color specification.
+- [x] Support for background color specification.
 - [ ] When a Zellij session is detached and reattached, the plugin stops without getting drawing and timer events.
 - [ ] Unnecessary borderlines appear when this plugin is placed at the bottom of the workspace with borderless=true.
 
@@ -102,6 +102,8 @@ timezone {
 }
 
 defalut_timezone "JST"
+
+background_color "#202020"
 ```
 
 https://github.com/h1romas4/zellij-datetime/assets/4337664/bc6af70a-9211-44bc-aea6-8a9e54389070
