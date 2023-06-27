@@ -6,7 +6,7 @@ This plugin adds a date and time pane to [Zellij](https://zellij.dev/), a termin
 
 ![zellij-04.png](https://raw.githubusercontent.com/h1romas4/zellij-datetime/main/docs/images/zellij-04.png)
 
-Since it is a WebAssembly/WASI build, it will probably work in all environments, including amd64, Arm.
+Zellij's plugin system leverages WebAssembly/WASI, and this plugin will also work with both amd64 and Arm in the same binary.
 
 ## WIP
 
@@ -91,7 +91,9 @@ https://github.com/h1romas4/zellij-datetime/assets/4337664/6ba30ce8-f1c5-4c32-9d
 
 ## Settings
 
-Place the configuration file [`.zellij-datetime.kdl`](https://github.com/h1romas4/zellij-datetime/blob/main/.zellij-datetime.kdl) in the Zellij startup directory.If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
+Place the configuration file [`.zellij-datetime.kdl`](https://github.com/h1romas4/zellij-datetime/blob/main/.zellij-datetime.kdl) in the Zellij startup directory.
+
+If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
 
 ### Timezone
 
