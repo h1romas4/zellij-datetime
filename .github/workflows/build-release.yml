@@ -47,7 +47,7 @@ jobs:
       run: |
         TARGET=target/wasm32-wasi/release/zellij-datetime.wasm
         ls -laF ${TARGET}
-        file ${TARGET} | grep WebAssembly
+        file ${TARGET} | grep WebAssembly | grep 'version 0x1'
         md5sum ${TARGET}
 
     - uses: ncipollo/release-action@v1
