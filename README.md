@@ -91,7 +91,7 @@ https://github.com/h1romas4/zellij-datetime/assets/4337664/6ba30ce8-f1c5-4c32-9d
 
 ## Settings
 
-Place the configuration file `.zellij-datetime.kdl` in the Zellij startup directory.If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
+Place the configuration file [`.zellij-datetime.kdl`](https://github.com/h1romas4/zellij-datetime/blob/main/.zellij-datetime.kdl) in the Zellij startup directory.If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
 
 ### Timezone
 
