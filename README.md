@@ -95,7 +95,7 @@ Place the configuration file [`.zellij-datetime.kdl`](https://github.com/h1romas
 
 If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
 
-### Timezone
+**Timezone**
 
 ```
 timezone {
@@ -107,7 +107,7 @@ timezone {
 defalut_timezone "JST"
 ```
 
-### Color
+**Color**
 
 ```
 background_color "#202020"
