@@ -40,7 +40,7 @@ zellij-tile-utils = "0.37.2"
 >
 > Since Zellij plugins using zellij-tile rely on shared data structures, currently one would need to compile a plugin against the corresponding zellij-tile package of the zellij version it is installed on.
 
-## Setup Zellij plugin
+## Setup
 
 Preparation of Plug-in deployment destination:
 
@@ -60,8 +60,6 @@ cd ~/.config/zellij/plugins/
 wget -O zellij-datetime.wasm \
     https://github.com/h1romas4/zellij-datetime/releases/latest/download/zellij-datetime.wasm
 ```
-
-## Usage
 
 Set the full path to `zellij-datetime.wasm` in the `~/.config/zellij/layouts/default.kdl` layouts file.
 
@@ -83,6 +81,8 @@ layout {
     }
 }
 ```
+
+## Usage
 
 - Timezone can be selected by left mouse click or scrolling.
 - Insert a date/time string into current pane with a right mouse click.
