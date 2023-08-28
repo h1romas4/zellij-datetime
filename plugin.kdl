@@ -13,6 +13,9 @@ layout {
         }
     }
     pane size=1 borderless=true {
+        plugin location="file:./target/wasm32-wasi/debug/zellij-datetime.wasm"
+    }
+    pane size=1 borderless=true {
         plugin location="zellij:tab-bar"
     }
     pane

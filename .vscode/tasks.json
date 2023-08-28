@@ -32,6 +32,7 @@
                 "-it",
                 "--rm",
                 "ubuntu:22.04",
+                // "/usr/bin/bash"
                 "/opt/zellij/zellij",
                 "-l",
                 "plugin.kbl"

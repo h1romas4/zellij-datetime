@@ -19,6 +19,7 @@ struct State {
     visible: bool,
     line: Line,
     config: Config,
+    permission_granted: bool,
 }
 register_plugin!(State);
 
@@ -44,10 +45,9 @@ impl ZellijPlugin for State {
             EventType::Mouse,
         ]);
         // request permission
+        self.permission_granted = false;
         if self.config.get_enable_right_click() {
-            request_permission(&[
-                PermissionType::WriteToStdin,
-            ]);
+            request_permission(&[PermissionType::WriteToStdin]);
         } else {
             set_selectable(false);
         }
@@ -56,7 +56,10 @@ impl ZellijPlugin for State {
     fn update(&mut self, event: Event) -> bool {
         let mut should_render: bool = false;
         match event {
-            Event::PermissionRequestResult(_result) => {
+            Event::PermissionRequestResult(result) => {
+                if result == PermissionStatus::Granted {
+                    self.permission_granted = true;
+                }
                 // TODO:
                 // The default time zone disappears only at the first interactive query of permissions.
                 // Cause is being analyzed. Currently being addressed by re-setting.
@@ -65,7 +68,7 @@ impl ZellijPlugin for State {
                 self.reset_default_timezone();
                 // Use focus until permission authentication.
                 set_selectable(false);
-            },
+            }
             Event::Visible(visible) => {
                 // TODO:
                 // If the Zellij session is detached, it is called with false,
@@ -97,7 +100,9 @@ impl ZellijPlugin for State {
                 }
                 Mouse::RightClick(_, _) => {
                     // write characters to the STDIN of the focused pane
-                    self.write_now();
+                    if self.config.get_enable_right_click() && self.permission_granted {
+                        self.write_now();
+                    }
                 }
                 Mouse::ScrollUp(_) => {
                     self.change_timezone_prev();
