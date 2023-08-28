@@ -89,9 +89,9 @@ layout {
 
 |  Key                 |  Format         | Default        | Note |
 | -------------------- | --------------- | -------------- | ---- |
-| `timezone1`          | `"name/offset"` | `"UTF/0"`      |      |
+| `timezone1`          | `"name/offset"` | `"UTC/0"`      |      |
 | `timezone[2-9]`      | `"name/offset"` | -              |      |
-| `default_timezone`   | `"name"`        | `"UTF"`        |      |
+| `default_timezone`   | `"name"`        | `"UTC"`        |      |
 | `background_color`   | `"#color"`      | `"#0080a0"`    |      |
 | `foreground_color`   | `"#color"`      | `"#ffffff"`    | It may be adjusted automatically depending on the `background_color` |
 | `pane_color`         | `"#color"`      | `"#1e1e1e"`    |      |
@@ -146,7 +146,7 @@ MIT License
 
 ### Operation log in riscv64
 
-At this time, RISC-V is not yet supported in Wasmer 3.1 used by Zellij. RISC-V has been supported since Wasmer 3.2.
+At this time, RISC-V is not yet supported in Wasmer 2.3 used by Zellij. RISC-V has been supported since Wasmer 3.2.
 
 ```bash
 $ uname -a
