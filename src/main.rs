@@ -57,7 +57,11 @@ impl ZellijPlugin for State {
         let mut should_render: bool = false;
         match event {
             Event::PermissionRequestResult(_result) => {
-                // reset default timezone (TODO: Why is this reconfiguration necessary here?)
+                // TODO:
+                // The default time zone disappears only at the first interactive query of permissions.
+                // Cause is being analyzed. Currently being addressed by re-setting.
+                // If authorization is granted by the permission cache,
+                // the default time zone will be set normally without the next line.
                 self.reset_default_timezone();
                 // Use focus until permission authentication.
                 set_selectable(false);
