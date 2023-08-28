@@ -23,7 +23,7 @@ jobs:
         path: |
           ~/.rustup
           ~/.cargo
-        key: ${{ runner.os }}-rust-1.69-opt
+        key: ${{ runner.os }}-rust-1.71-opt
 
     - name: Rust Toolchain Setup
       if: steps.cache-toolchaine.outputs.cache-hit != 'true'

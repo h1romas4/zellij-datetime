@@ -4,41 +4,18 @@
 
 This plugin adds a date and time pane to [Zellij](https://zellij.dev/), a terminal workspace.
 
-![zellij-04.png](https://raw.githubusercontent.com/h1romas4/zellij-datetime/main/docs/images/zellij-04.png)
+![zellij-05.png](https://raw.githubusercontent.com/h1romas4/zellij-datetime/main/docs/images/zellij-05.png)
 
 Zellij's plugin system leverages WebAssembly/WASI, and this plugin will also work with both amd64 and Arm in the same binary.
 
-## WIP
-
-- [x] Support for changing timezone by click or scroll on a pane.
-- [x] Support for timezone definition files.
-- [x] Binary size reduction.
-- [ ] Improved parsing of configuration files.
-- [x] Support for background color specification.
-- [ ] When a Zellij session is detached and reattached, the plugin stops without getting drawing and timer events.
-- [ ] Unnecessary borderlines appear when this plugin is placed at the bottom of the workspace with borderless=true.
-
 ## Require
 
-* Zellij `0.37.2`
+* Zellij `0.38.0` or later
 
 ```
 $ zellij -V
-zellij 0.37.2
+zellij 0.38.0
 ```
-
-```
-$ cat Cargo.toml | grep -A 2 dependencies
-[dependencies]
-zellij-tile = "0.37.2"
-zellij-tile-utils = "0.37.2"
-```
-
-> https://zellij.dev/documentation/plugin-upgrading.html
->
-> Upgrading a Plugin
->
-> Since Zellij plugins using zellij-tile rely on shared data structures, currently one would need to compile a plugin against the corresponding zellij-tile package of the zellij version it is installed on.
 
 ## Setup
 
@@ -85,33 +62,40 @@ layout {
 ## Usage
 
 - Timezone can be selected by left mouse click or scrolling.
-- Insert a date/time string into current pane with a right mouse click.
+- Insert a date/time string into current pane with a right mouse click. (Require `enable_right_click true` plugin setting)
 
 https://github.com/h1romas4/zellij-datetime/assets/4337664/6ba30ce8-f1c5-4c32-9d00-18e2224b4c37
 
-## Settings
-
-Place the configuration file [`.zellij-datetime.kdl`](https://github.com/h1romas4/zellij-datetime/blob/main/.zellij-datetime.kdl) in the Zellij startup directory.
-
-If you are running Zellij from `.bashrc`, it will be `~/.zellij-datetime.kdl`.
-
-**Timezone**
+## Plugin settings
 
 ```
-timezone {
-    define "UTC" 0
-    define "PDT" -7
-    define "JST" +9
+layout {
+    pane size=1 borderless=true {
+        plugin location="file:./target/wasm32-wasi/debug/zellij-datetime.wasm" {
+            timezone1 "PDT/-9"
+            timezone2 "UTC/0"
+            timezone3 "CEST/+2"
+            timezone4 "JST/+9"
+            default_timezone "JST"
+            background_color "#0080a0"
+            foreground_color "#ffffff"
+            pane_color "#1e1e1e"
+            enable_right_click false
+        }
+    }
+    pane
 }
-
-defalut_timezone "JST"
 ```
 
-**Color**
-
-```
-background_color "#202020"
-```
+|  Key                 |  Format         | Default        | Note |
+| -------------------- | --------------- | -------------- | ---- |
+| `timezone1`          | `"name/offset"` | `"UTF/0"`      |      |
+| `timezone[2-9]`      | `"name/offset"` | -              |      |
+| `default_timezone`   | `"name"`        | `"UTF"`        |      |
+| `background_color`   | `"#color"`      | `"#0080a0"`    |      |
+| `foreground_color`   | `"#color"`      | `"#ffffff"`    | It may be adjusted automatically depending on the `background_color` |
+| `pane_color`         | `"#color"`      | `"#1e1e1e"`    |      |
+| `enable_right_click` | bool            | `false`        | Right-clicking on the clock outputs the string format to stdin; Allow `PermissionType::WriteToStdin` permission when starting the plugin. |
 
 ## Build
 
@@ -148,11 +132,21 @@ zellij
 
 MIT License
 
+## WIP
+
+- [x] Support for changing timezone by click or scroll on a pane.
+- [x] Support for timezone definition files.
+- [x] Binary size reduction.
+- [x] Improved parsing of configuration files.
+- [x] Support for background color specification.
+- [ ] When a Zellij session is detached and reattached, the plugin stops without getting drawing and timer events. [#2575](https://github.com/zellij-org/zellij/issues/2575)
+- [x] Unnecessary borderlines appear when this plugin is placed at the bottom of the workspace with borderless=true.
+
 ## Note
 
 ### Operation log in riscv64
 
-At this time, RISC-V is not yet supported in Wasmer 2.3 used by Zellij. RISC-V has been supported since Wasmer 3.2.
+At this time, RISC-V is not yet supported in Wasmer 3.1 used by Zellij. RISC-V has been supported since Wasmer 3.2.
 
 ```bash
 $ uname -a

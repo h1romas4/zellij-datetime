@@ -2,7 +2,7 @@ mod config;
 mod line;
 
 use chrono::prelude::*;
-use std::fs;
+use std::collections::BTreeMap;
 use zellij_tile::prelude::*;
 
 use crate::config::Config;
@@ -17,36 +17,51 @@ struct State {
     timezone_offset: i32,
     before_minute: u32,
     visible: bool,
-    style: Style,
     line: Line,
     config: Config,
 }
 register_plugin!(State);
 
 impl ZellijPlugin for State {
-    fn load(&mut self) {
-        // load setting from config file
-        if let Ok(setting) = fs::read_to_string("/host/.zellij-datetime.kdl") {
-            self.config.load_config(&setting);
-        };
-        // get default timezone in config
-        self.timezone = self.config.get_defalut_timezone();
-        self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
+    fn load(&mut self, configuration: BTreeMap<String, String>) {
+        // setting from plugin config in layout
+        self.config.configuration(&configuration);
+        // reset default timezone
+        self.reset_default_timezone();
+        // create line sytle
+        self.line.update_style(
+            self.config.get_backgound_color(),
+            self.config.get_foreground_color(),
+            self.config.get_pane_color(),
+        );
         // for making minute comparisons
         self.before_minute = u32::MAX;
         // zellij plunin setting
-        set_selectable(false);
         subscribe(&[
+            EventType::PermissionRequestResult,
             EventType::Timer,
             EventType::Visible,
-            EventType::ModeUpdate,
             EventType::Mouse,
         ]);
+        // request permission
+        if self.config.get_enable_right_click() {
+            request_permission(&[
+                PermissionType::WriteToStdin,
+            ]);
+        } else {
+            set_selectable(false);
+        }
     }
 
     fn update(&mut self, event: Event) -> bool {
-        let mut render: bool = false;
+        let mut should_render: bool = false;
         match event {
+            Event::PermissionRequestResult(_result) => {
+                // reset default timezone (TODO: Why is this reconfiguration necessary here?)
+                self.reset_default_timezone();
+                // Use focus until permission authentication.
+                set_selectable(false);
+            },
             Event::Visible(visible) => {
                 // TODO:
                 // If the Zellij session is detached, it is called with false,
@@ -65,23 +80,16 @@ impl ZellijPlugin for State {
                 if self.before_minute != now_minute {
                     self.before_minute = now_minute;
                     self.now = Some(now);
-                    render = true;
+                    should_render = true;
                 }
                 if self.visible {
                     set_timeout(INTERVAL_TIME);
                 }
             }
-            Event::ModeUpdate(mode_info) => {
-                if self.style != mode_info.style {
-                    self.style = mode_info.style;
-                    self.line
-                        .update_style(self.style, self.config.get_backgound_color());
-                }
-            }
             Event::Mouse(mouse) => match mouse {
                 Mouse::LeftClick(_size, _align) => {
                     self.change_timezone_next();
-                    render = true;
+                    should_render = true;
                 }
                 Mouse::RightClick(_, _) => {
                     // write characters to the STDIN of the focused pane
@@ -89,17 +97,17 @@ impl ZellijPlugin for State {
                 }
                 Mouse::ScrollUp(_) => {
                     self.change_timezone_prev();
-                    render = true;
+                    should_render = true;
                 }
                 Mouse::ScrollDown(_) => {
                     self.change_timezone_next();
-                    render = true;
+                    should_render = true;
                 }
                 _ => {}
             },
             _ => {}
         }
-        render
+        should_render
     }
 
     fn render(&mut self, _rows: usize, cols: usize) {
@@ -122,6 +130,11 @@ impl ZellijPlugin for State {
 }
 
 impl State {
+    fn reset_default_timezone(&mut self) {
+        self.timezone = self.config.get_default_timezone();
+        self.timezone_offset = self.config.get_timezone_offset(&self.timezone);
+    }
+
     fn change_timezone(&mut self, timezone: String) {
         self.timezone = timezone;
         self.timezone_offset = self.config.get_timezone_offset(&self.timezone);

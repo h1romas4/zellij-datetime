@@ -1,33 +1,40 @@
+use std::collections::BTreeMap;
+
 use csscolorparser::Color;
-use kdl::KdlDocument;
 use linked_hash_map::LinkedHashMap;
 
-static DEFALUT_BG_COLOR: (u8, u8, u8) = (32, 32, 32);
+static DEFAULT_TIMEZONE: &str = "UTC";
+static DEFAULT_BACKGROUND_COLOR: &str = "#0080a0";
+static DEFAULT_FOREGROUND_COLOR: &str = "#ffffff";
+static DEFAULT_PANE_COLOR: &str = "#1e1e1e";
 
 pub struct Config {
     timezone: LinkedHashMap<String, i32>,
     default_timezone: String,
-    backgound_color: (u8, u8, u8),
+    backgound_color: Option<(u8, u8, u8)>,
+    foreground_color: Option<(u8, u8, u8)>,
+    pane_color: Option<(u8, u8, u8)>,
+    enable_right_click: bool,
 }
 
 impl Default for Config {
     fn default() -> Self {
-        let default_timezone = "UTC";
+        let default_timezone = DEFAULT_TIMEZONE;
         let mut timezone: LinkedHashMap<String, i32> = LinkedHashMap::new();
-        // default config
         timezone.insert(default_timezone.to_string(), 0);
-        timezone.insert("PDT".to_string(), -7);
-        timezone.insert("JST".to_string(), 9);
         Config {
             timezone,
             default_timezone: default_timezone.to_string(),
-            backgound_color: DEFALUT_BG_COLOR,
+            backgound_color: Some(parse_color(DEFAULT_BACKGROUND_COLOR).unwrap()),
+            foreground_color: Some(parse_color(DEFAULT_FOREGROUND_COLOR).unwrap()),
+            pane_color: Some(parse_color(DEFAULT_PANE_COLOR).unwrap()),
+            enable_right_click: false,
         }
     }
 }
 
 impl Config {
-    pub fn get_defalut_timezone(&self) -> String {
+    pub fn get_default_timezone(&self) -> String {
         self.default_timezone.to_string()
     }
 
@@ -68,54 +75,78 @@ impl Config {
         }
     }
 
-    pub fn get_backgound_color(&self) -> (u8, u8, u8) {
+    pub fn get_backgound_color(&self) -> Option<(u8, u8, u8)> {
         self.backgound_color
     }
 
-    pub fn load_config(&mut self, setting: &str) {
-        let mut config_timezone: LinkedHashMap<String, i32> = LinkedHashMap::new();
-        if let Ok(doc) = setting.parse::<KdlDocument>() {
-            // timezone tree (TODO: using KQL or macro)
-            if let Some(timezone) = doc.get("timezone") {
-                if let Some(children) = timezone.children() {
-                    for node in children.nodes() {
-                        if node.name().value() == "define" && node.entries().len() >= 2 {
-                            if let Ok(offset) = node.entries()[1].to_string().trim().parse() {
-                                config_timezone.insert(
-                                    node.entries()[0].to_string().trim().replace('"', ""),
-                                    offset,
-                                );
-                            }
+    pub fn get_foreground_color(&self) -> Option<(u8, u8, u8)> {
+        self.foreground_color
+    }
+
+    pub fn get_pane_color(&self) -> Option<(u8, u8, u8)> {
+        self.pane_color
+    }
+
+    pub fn get_enable_right_click(&self) -> bool {
+        self.enable_right_click
+    }
+
+    pub fn configuration(&mut self, configuration: &BTreeMap<String, String>) {
+        let mut timezone: LinkedHashMap<String, i32> = LinkedHashMap::new();
+        let mut default_timezone: Option<String> = None;
+
+        for (key, value) in configuration {
+            match key.as_str() {
+                "timezone1" | "timezone2" | "timezone3" | "timezone4" | "timezone5"
+                | "timezone6" | "timezone7" | "timezone8" | "timezone9" => {
+                    let value: Vec<&str> = value.split('/').collect();
+                    if value.len() == 2 {
+                        if let Ok(offset) = value[1].parse() {
+                            timezone.insert(value[0].trim().to_string(), offset);
                         }
                     }
                 }
-            }
-            // override defalut config
-            if !config_timezone.is_empty() {
-                self.timezone = config_timezone;
-            }
-            // default timezone
-            if let Some(defalut_timezone) = doc.get_arg("defalut_timezone") {
-                let timezone = defalut_timezone.to_string().trim().replace('"', "");
-                if self.timezone.contains_key(&timezone) {
-                    self.default_timezone = timezone;
-                } else {
-                    // first key
-                    self.default_timezone = self.timezone.keys().next().unwrap().to_string();
+                "default_timezone" => {
+                    default_timezone = Some(value.trim().to_string());
                 }
-            }
-            // backgound color
-            if let Some(backgound_color) = doc.get_arg("background_color") {
-                if let Ok(color) = backgound_color
-                    .to_string()
-                    .replace('"', "")
-                    .trim()
-                    .parse::<Color>()
-                {
-                    let color = color.to_rgba8();
-                    self.backgound_color = (color[0], color[1], color[2]);
+                "background_color" => {
+                    if let Ok(color) = parse_color(value) {
+                        self.backgound_color = Some((color.0, color.1, color.2));
+                    }
                 }
+                "foreground_color" => {
+                    if let Ok(color) = parse_color(value) {
+                        self.foreground_color = Some((color.0, color.1, color.2));
+                    }
+                }
+                "pane_color" => {
+                    if let Ok(color) = parse_color(value) {
+                        self.pane_color = Some((color.0, color.1, color.2));
+                    }
+                }
+                "enable_right_click" => {
+                    self.enable_right_click = value.trim().parse().unwrap_or(false);
+                }
+                _ => {}
             }
         }
+
+        if !timezone.is_empty() {
+            self.default_timezone = timezone.keys().next().unwrap().to_string();
+            if let Some(default_timezone) = default_timezone {
+                if timezone.contains_key(&default_timezone) {
+                    self.default_timezone = default_timezone;
+                }
+            }
+            self.timezone = timezone;
+        }
     }
+}
+
+fn parse_color(color: &str) -> Result<(u8, u8, u8), &str> {
+    if let Ok(color) = color.to_string().trim().parse::<Color>() {
+        let color = color.to_rgba8();
+        return Ok((color[0], color[1], color[2]));
+    }
+    Err("Color format parse error")
 }

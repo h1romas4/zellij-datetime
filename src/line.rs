@@ -7,24 +7,41 @@ static ARROW_SPACE: &str = " ";
 
 #[derive(Default)]
 pub struct Line {
-    fg_color: PaletteColor,
-    bg_color: PaletteColor,
-    datetime_bg_color: PaletteColor,
+    backgound_color: PaletteColor,
+    foreground_color: PaletteColor,
+    pane_color: PaletteColor,
     separator: (String, String, String),
 }
 
 impl Line {
-    pub fn update_style(&mut self, style: Style, datetime_bg_color: (u8, u8, u8)) {
-        // pallet
-        self.fg_color = style.colors.fg;
-        self.bg_color = style.colors.bg;
-        self.datetime_bg_color = PaletteColor::Rgb(datetime_bg_color);
+    pub fn update_style(
+        &mut self,
+        backgound_color: Option<(u8, u8, u8)>,
+        foreground_color: Option<(u8, u8, u8)>,
+        pane_color: Option<(u8, u8, u8)>,
+    ) {
+        // set color
+        if let Some(bg_color) = backgound_color {
+            self.backgound_color = PaletteColor::Rgb(bg_color);
+        }
+        if let Some(fg_color) = foreground_color {
+            self.foreground_color = PaletteColor::Rgb(fg_color);
+        }
+        if let Some(pane_color) = pane_color {
+            self.pane_color = PaletteColor::Rgb(pane_color);
+        }
         // create charctor
-        let bg_1 = self.bg_color;
-        let bg_2 = self.datetime_bg_color;
+        let bg_1 = self.pane_color;
+        let bg_2 = self.backgound_color;
         let arrow = &style!(bg_2, bg_2).bold().paint(ARROW_SPACE).to_string();
-        let sep_1 = &style!(bg_2, bg_1).bold().paint(ARROW_SEPARATOR_1).to_string();
-        let sep_2 = &style!(bg_1, bg_2).bold().paint(ARROW_SEPARATOR_2).to_string();
+        let sep_1 = &style!(bg_2, bg_1)
+            .bold()
+            .paint(ARROW_SEPARATOR_1)
+            .to_string();
+        let sep_2 = &style!(bg_1, bg_2)
+            .bold()
+            .paint(ARROW_SEPARATOR_2)
+            .to_string();
         let mut sp_0 = String::new();
         sp_0.push_str(sep_1);
         sp_0.push_str(arrow);
@@ -38,7 +55,7 @@ impl Line {
     }
 
     pub fn create(&self, cols: usize, timezone: &str, date: &str, time: &str) -> String {
-        // padding (support full width)
+        // padding (partial support for full-width characters)
         let timezone_len = timezone
             .chars()
             .map(|c| if c.is_ascii() { 1 } else { 2 })
@@ -47,16 +64,16 @@ impl Line {
         // There are cases where cols may be declared momentarily low at render time.
         let padding: String = if cols as isize - width as isize > 0 {
             let space = ARROW_SPACE.repeat(cols - width);
-            style!(self.fg_color, self.bg_color)
+            style!(self.foreground_color, self.pane_color)
                 .paint(space)
                 .to_string()
         } else {
             String::new()
         };
 
-        let timezone = style!(self.fg_color, self.datetime_bg_color).paint(timezone);
-        let date = style!(self.fg_color, self.datetime_bg_color).paint(date);
-        let time = style!(self.fg_color, self.datetime_bg_color).paint(time);
+        let timezone = style!(self.foreground_color, self.backgound_color).paint(timezone);
+        let date = style!(self.foreground_color, self.backgound_color).paint(date);
+        let time = style!(self.foreground_color, self.backgound_color).paint(time);
 
         format!(
             "{}{}{}{}{}{}{}{}",
