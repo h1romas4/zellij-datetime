@@ -83,7 +83,6 @@ layout {
             enable_right_click false
         }
     }
-    pane
 }
 ```
 
