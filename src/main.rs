@@ -25,6 +25,7 @@ register_plugin!(State);
 
 impl ZellijPlugin for State {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
+        // configuration
         self.config.configuration(&configuration);
         self.reset_default_timezone();
         self.line.update_style(
@@ -32,17 +33,16 @@ impl ZellijPlugin for State {
             self.config.get_foreground_color(),
             self.config.get_pane_color(),
         );
-
-        // Determine the elapse of one minute
+        // initialize state
         self.before_minute = u32::MAX;
-
+        // subscribe
         subscribe(&[
             EventType::PermissionRequestResult,
             EventType::Timer,
             EventType::Visible,
             EventType::Mouse,
         ]);
-
+        // permission
         self.permission_granted = false;
         let mut permission = vec![];
         if self.config.get_enable_right_click() {

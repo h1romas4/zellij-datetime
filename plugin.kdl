@@ -19,8 +19,8 @@ layout {
             enable_debug true
         }
     }
-    // Testing the Default Option
     pane size=1 borderless=true {
+        // Testing the Default Option
         plugin location="file:./target/wasm32-wasi/debug/zellij-datetime.wasm"
     }
     pane size=1 borderless=true {
