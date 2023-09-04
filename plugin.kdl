@@ -10,6 +10,7 @@ layout {
             foreground_color "#ffffff"
             pane_color "#1e1e1e"
             enable_right_click true
+            enable_debug true
         }
     }
     pane size=1 borderless=true {

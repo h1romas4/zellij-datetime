@@ -46,8 +46,12 @@ impl ZellijPlugin for State {
         ]);
         // request permission
         self.permission_granted = false;
+        let mut permission = vec![];
         if self.config.get_enable_right_click() {
-            request_permission(&[PermissionType::WriteToStdin]);
+            permission.push(PermissionType::WriteToStdin);
+        }
+        if !permission.is_empty() {
+            request_permission(&permission);
         } else {
             set_selectable(false);
         }

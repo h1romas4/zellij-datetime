@@ -15,6 +15,7 @@ pub struct Config {
     foreground_color: Option<(u8, u8, u8)>,
     pane_color: Option<(u8, u8, u8)>,
     enable_right_click: bool,
+    enable_debug: bool,
 }
 
 impl Default for Config {
@@ -29,6 +30,7 @@ impl Default for Config {
             foreground_color: Some(parse_color(DEFAULT_FOREGROUND_COLOR).unwrap()),
             pane_color: Some(parse_color(DEFAULT_PANE_COLOR).unwrap()),
             enable_right_click: false,
+            enable_debug: false,
         }
     }
 }
@@ -91,6 +93,11 @@ impl Config {
         self.enable_right_click
     }
 
+    #[allow(unused)]
+    pub fn get_enable_debug(&self) -> bool {
+        self.enable_debug
+    }
+
     pub fn configuration(&mut self, configuration: &BTreeMap<String, String>) {
         let mut timezone: LinkedHashMap<String, i32> = LinkedHashMap::new();
         let mut default_timezone: Option<String> = None;
@@ -126,6 +133,9 @@ impl Config {
                 }
                 "enable_right_click" => {
                     self.enable_right_click = value.trim().parse().unwrap_or(false);
+                }
+                "enable_debug" => {
+                    self.enable_debug = value.trim().parse().unwrap_or(false);
                 }
                 _ => {}
             }
