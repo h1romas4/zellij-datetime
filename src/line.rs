@@ -16,20 +16,14 @@ pub struct Line {
 impl Line {
     pub fn update_style(
         &mut self,
-        backgound_color: Option<(u8, u8, u8)>,
-        foreground_color: Option<(u8, u8, u8)>,
-        pane_color: Option<(u8, u8, u8)>,
+        backgound_color: (u8, u8, u8),
+        foreground_color: (u8, u8, u8),
+        pane_color: (u8, u8, u8),
     ) {
         // set color
-        if let Some(bg_color) = backgound_color {
-            self.backgound_color = PaletteColor::Rgb(bg_color);
-        }
-        if let Some(fg_color) = foreground_color {
-            self.foreground_color = PaletteColor::Rgb(fg_color);
-        }
-        if let Some(pane_color) = pane_color {
-            self.pane_color = PaletteColor::Rgb(pane_color);
-        }
+        self.backgound_color = PaletteColor::Rgb(backgound_color);
+        self.foreground_color = PaletteColor::Rgb(foreground_color);
+        self.pane_color = PaletteColor::Rgb(pane_color);
         // create charctor
         let bg_1 = self.pane_color;
         let bg_2 = self.backgound_color;

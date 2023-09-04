@@ -11,10 +11,11 @@ static DEFAULT_PANE_COLOR: &str = "#1e1e1e";
 pub struct Config {
     timezone: LinkedHashMap<String, i32>,
     default_timezone: String,
-    backgound_color: Option<(u8, u8, u8)>,
-    foreground_color: Option<(u8, u8, u8)>,
-    pane_color: Option<(u8, u8, u8)>,
+    backgound_color: (u8, u8, u8),
+    foreground_color: (u8, u8, u8),
+    pane_color: (u8, u8, u8),
     enable_right_click: bool,
+    enable_debug: bool,
 }
 
 impl Default for Config {
@@ -25,10 +26,11 @@ impl Default for Config {
         Config {
             timezone,
             default_timezone: default_timezone.to_string(),
-            backgound_color: Some(parse_color(DEFAULT_BACKGROUND_COLOR).unwrap()),
-            foreground_color: Some(parse_color(DEFAULT_FOREGROUND_COLOR).unwrap()),
-            pane_color: Some(parse_color(DEFAULT_PANE_COLOR).unwrap()),
+            backgound_color: parse_color(DEFAULT_BACKGROUND_COLOR).unwrap(),
+            foreground_color: parse_color(DEFAULT_FOREGROUND_COLOR).unwrap(),
+            pane_color: parse_color(DEFAULT_PANE_COLOR).unwrap(),
             enable_right_click: false,
+            enable_debug: false,
         }
     }
 }
@@ -75,20 +77,25 @@ impl Config {
         }
     }
 
-    pub fn get_backgound_color(&self) -> Option<(u8, u8, u8)> {
+    pub fn get_backgound_color(&self) -> (u8, u8, u8) {
         self.backgound_color
     }
 
-    pub fn get_foreground_color(&self) -> Option<(u8, u8, u8)> {
+    pub fn get_foreground_color(&self) -> (u8, u8, u8) {
         self.foreground_color
     }
 
-    pub fn get_pane_color(&self) -> Option<(u8, u8, u8)> {
+    pub fn get_pane_color(&self) -> (u8, u8, u8) {
         self.pane_color
     }
 
     pub fn get_enable_right_click(&self) -> bool {
         self.enable_right_click
+    }
+
+    #[allow(unused)]
+    pub fn get_enable_debug(&self) -> bool {
+        self.enable_debug
     }
 
     pub fn configuration(&mut self, configuration: &BTreeMap<String, String>) {
@@ -97,6 +104,7 @@ impl Config {
 
         for (key, value) in configuration {
             match key.as_str() {
+                // Option key BTreeMap is sorted
                 "timezone1" | "timezone2" | "timezone3" | "timezone4" | "timezone5"
                 | "timezone6" | "timezone7" | "timezone8" | "timezone9" => {
                     let value: Vec<&str> = value.split('/').collect();
@@ -111,21 +119,24 @@ impl Config {
                 }
                 "background_color" => {
                     if let Ok(color) = parse_color(value) {
-                        self.backgound_color = Some((color.0, color.1, color.2));
+                        self.backgound_color = (color.0, color.1, color.2);
                     }
                 }
                 "foreground_color" => {
                     if let Ok(color) = parse_color(value) {
-                        self.foreground_color = Some((color.0, color.1, color.2));
+                        self.foreground_color = (color.0, color.1, color.2);
                     }
                 }
                 "pane_color" => {
                     if let Ok(color) = parse_color(value) {
-                        self.pane_color = Some((color.0, color.1, color.2));
+                        self.pane_color = (color.0, color.1, color.2);
                     }
                 }
                 "enable_right_click" => {
                     self.enable_right_click = value.trim().parse().unwrap_or(false);
+                }
+                "enable_debug" => {
+                    self.enable_debug = value.trim().parse().unwrap_or(false);
                 }
                 _ => {}
             }
