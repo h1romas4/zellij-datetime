@@ -1,20 +1,34 @@
 layout {
     pane size=1 borderless=true {
         plugin location="file:./target/wasm32-wasi/debug/zellij-datetime.wasm" {
+            // Testing multiple timezone settings
             timezone1 "PDT/-9"
             timezone2 "UTC/0"
             timezone3 "CEST/+2"
             timezone4 "JST/+9"
+            // Testing that it will be in the specified timezone instead of timezone1
             default_timezone "JST"
+            // Testing the Color Parser
             background_color "#0080a0"
             foreground_color "#ffffff"
             pane_color "#1e1e1e"
+            // Testing Plug-in Permissions
+            // To be tested at the first interactive query and at the automatic configuration cache.
             enable_right_click true
+            // Debugging options (not yet used)
             enable_debug true
         }
     }
+    // Testing the Default Option
     pane size=1 borderless=true {
         plugin location="file:./target/wasm32-wasi/debug/zellij-datetime.wasm"
+    }
+    pane size=1 borderless=true {
+        plugin location="file:./target/wasm32-wasi/debug/zellij-datetime.wasm" {
+            // Testing that the optional keys are sorted
+            timezone4 "JST/+9"
+            timezone3 "CEST/+2"
+        }
     }
     pane size=1 borderless=true {
         plugin location="zellij:tab-bar"

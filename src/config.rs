@@ -104,6 +104,7 @@ impl Config {
 
         for (key, value) in configuration {
             match key.as_str() {
+                // Option key BTreeMap is sorted
                 "timezone1" | "timezone2" | "timezone3" | "timezone4" | "timezone5"
                 | "timezone6" | "timezone7" | "timezone8" | "timezone9" => {
                     let value: Vec<&str> = value.split('/').collect();
