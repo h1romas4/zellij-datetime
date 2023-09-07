@@ -7,6 +7,9 @@ static DEFAULT_TIMEZONE: &str = "UTC";
 static DEFAULT_BACKGROUND_COLOR: &str = "#0080a0";
 static DEFAULT_FOREGROUND_COLOR: &str = "#ffffff";
 static DEFAULT_PANE_COLOR: &str = "#1e1e1e";
+static DEFAULT_ARROW_SEPARATOR_1: &str = "";
+static DEFAULT_ARROW_SEPARATOR_2: &str = "";
+static DEFAULT_ARROW_SPACE: &str = " ";
 
 pub struct Config {
     timezone: LinkedHashMap<String, i32>,
@@ -15,6 +18,7 @@ pub struct Config {
     foreground_color: (u8, u8, u8),
     pane_color: (u8, u8, u8),
     enable_right_click: bool,
+    separator: (String, String, String),
     enable_debug: bool,
 }
 
@@ -30,6 +34,11 @@ impl Default for Config {
             foreground_color: parse_color(DEFAULT_FOREGROUND_COLOR).unwrap(),
             pane_color: parse_color(DEFAULT_PANE_COLOR).unwrap(),
             enable_right_click: false,
+            separator: (
+                DEFAULT_ARROW_SEPARATOR_1.to_string(),
+                DEFAULT_ARROW_SEPARATOR_2.to_string(),
+                DEFAULT_ARROW_SPACE.to_string(),
+            ),
             enable_debug: false,
         }
     }
@@ -93,6 +102,10 @@ impl Config {
         self.enable_right_click
     }
 
+    pub fn get_separator(&self) -> &(String, String, String) {
+        &self.separator
+    }
+
     #[allow(unused)]
     pub fn get_enable_debug(&self) -> bool {
         self.enable_debug
@@ -135,6 +148,15 @@ impl Config {
                 "enable_right_click" => {
                     self.enable_right_click = value.trim().parse().unwrap_or(false);
                 }
+                "arrow_separator1" => {
+                    self.separator.0 = get_first_char_or_blank(value.trim());
+                }
+                "arrow_separator2" => {
+                    self.separator.1 = get_first_char_or_blank(value.trim());
+                }
+                "arrow_space" => {
+                    self.separator.2 = get_first_char_or_blank(value);
+                }
                 "enable_debug" => {
                     self.enable_debug = value.trim().parse().unwrap_or(false);
                 }
@@ -160,4 +182,11 @@ fn parse_color(color: &str) -> Result<(u8, u8, u8), &str> {
         return Ok((color[0], color[1], color[2]));
     }
     Err("Color format parse error")
+}
+
+fn get_first_char_or_blank(string: &str) -> String {
+    if let Some(first) = string.chars().next() {
+        return first.to_string()
+    }
+    " ".to_string()
 }

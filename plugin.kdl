@@ -12,6 +12,10 @@ layout {
             background_color "#0080a0"
             foreground_color "#ffffff"
             pane_color "#1e1e1e"
+            // Testing Arrow
+            arrow_separator1 ""
+            arrow_separator2 ""
+            arrow_space " "
             // Testing Plug-in Permissions
             // To be tested at the first interactive query and at the automatic configuration cache.
             enable_right_click true
@@ -28,6 +32,10 @@ layout {
             // Testing that the optional keys are sorted
             timezone4 "JST/+9"
             timezone3 "CEST/+2"
+            // Testing Arrow
+            arrow_separator1 ""
+            arrow_separator2 ""
+            arrow_space ""
         }
     }
     pane size=1 borderless=true {

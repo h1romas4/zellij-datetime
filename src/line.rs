@@ -1,10 +1,6 @@
 use zellij_tile::prelude::*;
 use zellij_tile_utils::style;
 
-static ARROW_SEPARATOR_1: &str = "";
-static ARROW_SEPARATOR_2: &str = "";
-static ARROW_SPACE: &str = " ";
-
 #[derive(Default)]
 pub struct Line {
     backgound_color: PaletteColor,
@@ -19,6 +15,7 @@ impl Line {
         backgound_color: (u8, u8, u8),
         foreground_color: (u8, u8, u8),
         pane_color: (u8, u8, u8),
+        separator: &(String, String, String)
     ) {
         // set color
         self.backgound_color = PaletteColor::Rgb(backgound_color);
@@ -27,14 +24,14 @@ impl Line {
         // create charctor
         let bg_1 = self.pane_color;
         let bg_2 = self.backgound_color;
-        let arrow = &style!(bg_2, bg_2).bold().paint(ARROW_SPACE).to_string();
+        let arrow = &style!(bg_2, bg_2).bold().paint(&separator.2).to_string();
         let sep_1 = &style!(bg_2, bg_1)
             .bold()
-            .paint(ARROW_SEPARATOR_1)
+            .paint(&separator.0)
             .to_string();
         let sep_2 = &style!(bg_1, bg_2)
             .bold()
-            .paint(ARROW_SEPARATOR_2)
+            .paint(&separator.1)
             .to_string();
         let mut sp_0 = String::new();
         sp_0.push_str(sep_1);
@@ -57,7 +54,7 @@ impl Line {
         let width = timezone_len + date.len() + time.len() + 9;
         // There are cases where cols may be declared momentarily low at render time.
         let padding: String = if cols as isize - width as isize > 0 {
-            let space = ARROW_SPACE.repeat(cols - width);
+            let space = " ".repeat(cols - width);
             style!(self.foreground_color, self.pane_color)
                 .paint(space)
                 .to_string()

@@ -32,6 +32,7 @@ impl ZellijPlugin for State {
             self.config.get_backgound_color(),
             self.config.get_foreground_color(),
             self.config.get_pane_color(),
+            self.config.get_separator(),
         );
         // initialize state
         self.before_minute = u32::MAX;
