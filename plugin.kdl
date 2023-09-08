@@ -21,6 +21,7 @@ layout {
             enable_right_click true
             // Debugging options (not yet used)
             enable_debug true
+            padding_adjust 0
         }
     }
     pane size=1 borderless=true {
@@ -33,9 +34,10 @@ layout {
             timezone4 "JST/+9"
             timezone3 "CEST/+2"
             // Testing Arrow
-            arrow_separator1 ""
-            arrow_separator2 ""
-            arrow_space ""
+            arrow_separator1 "📅"
+            arrow_separator2 "⌚"
+            arrow_space "🌄"
+            padding_adjust 9
         }
     }
     pane size=1 borderless=true {

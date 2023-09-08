@@ -19,6 +19,7 @@ pub struct Config {
     pane_color: (u8, u8, u8),
     enable_right_click: bool,
     separator: (String, String, String),
+    padding_adjust: i32,
     enable_debug: bool,
 }
 
@@ -39,6 +40,7 @@ impl Default for Config {
                 DEFAULT_ARROW_SEPARATOR_2.to_string(),
                 DEFAULT_ARROW_SPACE.to_string(),
             ),
+            padding_adjust: 0,
             enable_debug: false,
         }
     }
@@ -106,6 +108,10 @@ impl Config {
         &self.separator
     }
 
+    pub fn padding_adjust(&self) -> i32 {
+        self.padding_adjust
+    }
+
     #[allow(unused)]
     pub fn get_enable_debug(&self) -> bool {
         self.enable_debug
@@ -157,6 +163,10 @@ impl Config {
                 "arrow_space" => {
                     self.separator.2 = get_first_char_or_blank(value);
                 }
+                "padding_adjust" => {
+                    self.padding_adjust = value.trim().parse().unwrap_or(0);
+
+                }
                 "enable_debug" => {
                     self.enable_debug = value.trim().parse().unwrap_or(false);
                 }
@@ -188,5 +198,5 @@ fn get_first_char_or_blank(string: &str) -> String {
     if let Some(first) = string.chars().next() {
         return first.to_string()
     }
-    " ".to_string()
+    "".to_string()
 }

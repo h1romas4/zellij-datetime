@@ -7,6 +7,7 @@ pub struct Line {
     foreground_color: PaletteColor,
     pane_color: PaletteColor,
     separator: (String, String, String),
+    padding: i32
 }
 
 impl Line {
@@ -15,7 +16,8 @@ impl Line {
         backgound_color: (u8, u8, u8),
         foreground_color: (u8, u8, u8),
         pane_color: (u8, u8, u8),
-        separator: &(String, String, String)
+        separator: &(String, String, String),
+        padding_adjust: i32
     ) {
         // set color
         self.backgound_color = PaletteColor::Rgb(backgound_color);
@@ -43,6 +45,8 @@ impl Line {
         let mut sp_2 = String::new();
         sp_2.push_str(arrow);
         self.separator = (sp_0, sp_1, sp_2);
+        // padding (9: all arrows + spaces)
+        self.padding = 9 + padding_adjust;
     }
 
     pub fn create(&self, cols: usize, timezone: &str, date: &str, time: &str) -> String {
@@ -51,7 +55,8 @@ impl Line {
             .chars()
             .map(|c| if c.is_ascii() { 1 } else { 2 })
             .sum::<usize>();
-        let width = timezone_len + date.len() + time.len() + 9;
+        let width = ((timezone_len + date.len() + time.len()) as i32) + self.padding;
+        let width = width as usize;
         // There are cases where cols may be declared momentarily low at render time.
         let padding: String = if cols as isize - width as isize > 0 {
             let space = " ".repeat(cols - width);
