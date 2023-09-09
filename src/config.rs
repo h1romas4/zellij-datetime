@@ -108,7 +108,7 @@ impl Config {
         &self.separator
     }
 
-    pub fn padding_adjust(&self) -> i32 {
+    pub fn get_padding_adjust(&self) -> i32 {
         self.padding_adjust
     }
 
