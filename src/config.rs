@@ -9,7 +9,7 @@ static DEFAULT_FOREGROUND_COLOR: &str = "#ffffff";
 static DEFAULT_PANE_COLOR: &str = "#1e1e1e";
 static DEFAULT_ARROW_SEPARATOR_1: &str = "";
 static DEFAULT_ARROW_SEPARATOR_2: &str = "";
-static DEFAULT_ARROW_SPACE: &str = " ";
+static DEFAULT_ARROW_SEPARATOR_3: &str = "";
 
 pub struct Config {
     timezone: LinkedHashMap<String, i32>,
@@ -38,7 +38,7 @@ impl Default for Config {
             separator: (
                 DEFAULT_ARROW_SEPARATOR_1.to_string(),
                 DEFAULT_ARROW_SEPARATOR_2.to_string(),
-                DEFAULT_ARROW_SPACE.to_string(),
+                DEFAULT_ARROW_SEPARATOR_3.to_string(),
             ),
             padding_adjust: 0,
             enable_debug: false,
@@ -160,8 +160,8 @@ impl Config {
                 "arrow_separator2" => {
                     self.separator.1 = get_first_char_or_blank(value.trim());
                 }
-                "arrow_space" => {
-                    self.separator.2 = get_first_char_or_blank(value);
+                "arrow_separator3" => {
+                    self.separator.2 = get_first_char_or_blank(value.trim());
                 }
                 "padding_adjust" => {
                     self.padding_adjust = value.trim().parse().unwrap_or(0);

@@ -15,13 +15,13 @@ layout {
             // Testing Arrow
             arrow_separator1 ""
             arrow_separator2 ""
-            arrow_space " "
+            arrow_separator3 ""
+            padding_adjust 0
             // Testing Plug-in Permissions
             // To be tested at the first interactive query and at the automatic configuration cache.
             enable_right_click true
             // Debugging options (not yet used)
             enable_debug true
-            padding_adjust 0
         }
     }
     pane size=1 borderless=true {
@@ -34,10 +34,11 @@ layout {
             timezone4 "JST/+9"
             timezone3 "CEST/+2"
             // Testing Arrow
-            arrow_separator1 "📅"
-            arrow_separator2 "⌚"
-            arrow_space "🌄"
-            padding_adjust 9
+            arrow_separator1 "🌍"
+            arrow_separator2 "📅"
+            arrow_separator3 "⌚"
+            padding_adjust 3
+            pane_color "#0080a0"
         }
     }
     pane size=1 borderless=true {
