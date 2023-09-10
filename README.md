@@ -85,6 +85,7 @@ layout {
             arrow_separator2 ""
             arrow_separator3 ""
             padding_adjust 0
+            text_align "right"
         }
     }
 }
@@ -103,6 +104,7 @@ layout {
 | `arrow_separator2`   | `"string"`      | `""`          | 📅 Only the first character. |
 | `arrow_separator3`   | `"string"`      | `""`          | ⌚ Only the first character. |
 | `padding_adjust`     | `i32`           | `0`            | It can be used to adjust left-justified padding. For example, adjusting the separator width if it is off by full-width. |
+| `text_align`         | `"string"`      | `"right"`      | `right` or `left` or `center` |
 
 ## Build
 

@@ -20,6 +20,8 @@ layout {
             // Testing Plug-in Permissions
             // To be tested at the first interactive query and at the automatic configuration cache.
             enable_right_click true
+            // Testing Text align
+            text_align "right"
             // Debugging options (not yet used)
             enable_debug true
         }
@@ -39,8 +41,9 @@ layout {
             arrow_separator1 "🌍"
             arrow_separator2 "📅"
             arrow_separator3 "⌚"
-            padding_adjust 3
+            padding_adjust 1
             pane_color "#0080a0"
+            text_align "center"
         }
     }
     pane size=1 borderless=true {

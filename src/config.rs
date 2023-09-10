@@ -10,6 +10,7 @@ static DEFAULT_PANE_COLOR: &str = "#1e1e1e";
 static DEFAULT_ARROW_SEPARATOR_1: &str = "";
 static DEFAULT_ARROW_SEPARATOR_2: &str = "";
 static DEFAULT_ARROW_SEPARATOR_3: &str = "";
+static DEFAULT_TEXT_ALIGN: &str = "right";
 
 pub struct Config {
     timezone: LinkedHashMap<String, i32>,
@@ -20,6 +21,7 @@ pub struct Config {
     enable_right_click: bool,
     separator: (String, String, String),
     padding_adjust: i32,
+    text_align: String,
     enable_debug: bool,
 }
 
@@ -41,6 +43,7 @@ impl Default for Config {
                 DEFAULT_ARROW_SEPARATOR_3.to_string(),
             ),
             padding_adjust: 0,
+            text_align: DEFAULT_TEXT_ALIGN.to_string(),
             enable_debug: false,
         }
     }
@@ -112,6 +115,10 @@ impl Config {
         self.padding_adjust
     }
 
+    pub fn get_text_align(&self) -> &String {
+        &self.text_align
+    }
+
     #[allow(unused)]
     pub fn get_enable_debug(&self) -> bool {
         self.enable_debug
@@ -165,7 +172,9 @@ impl Config {
                 }
                 "padding_adjust" => {
                     self.padding_adjust = value.trim().parse().unwrap_or(0);
-
+                }
+                "text_align" => {
+                    self.text_align = value.trim().to_ascii_lowercase().to_string();
                 }
                 "enable_debug" => {
                     self.enable_debug = value.trim().parse().unwrap_or(false);

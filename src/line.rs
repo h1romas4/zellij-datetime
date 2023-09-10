@@ -8,7 +8,20 @@ pub struct Line {
     pane_color: PaletteColor,
     separator: (String, String, String),
     space: String,
-    padding: i32
+    padding: i32,
+    text_align: TextAlign
+}
+
+enum TextAlign {
+    Right,
+    Left,
+    Center
+}
+
+impl Default for TextAlign {
+    fn default() -> Self {
+        Self::Right
+    }
 }
 
 impl Line {
@@ -18,7 +31,8 @@ impl Line {
         foreground_color: (u8, u8, u8),
         pane_color: (u8, u8, u8),
         separator: &(String, String, String),
-        padding_adjust: i32
+        padding_adjust: i32,
+        text_align: &str
     ) {
         // set color
         self.backgound_color = PaletteColor::Rgb(backgound_color);
@@ -59,6 +73,13 @@ impl Line {
         // Getting the exact width is too much processing for a plugin,
         // so it can be adjusted by user specification.
         self.padding = length + padding_adjust;
+        // text align
+        self.text_align = match text_align {
+            "right" => TextAlign::Right,
+            "left" => TextAlign::Left,
+            "center" => TextAlign::Center,
+            _ => TextAlign::Right
+        };
     }
 
     pub fn create(&self, cols: usize, timezone: &str, date: &str, time: &str) -> String {
@@ -71,7 +92,11 @@ impl Line {
         let width = width as usize;
         // There are cases where cols may be declared momentarily low at render time.
         let padding: String = if cols as isize - width as isize > 0 {
-            let space = " ".repeat(cols - width);
+            let size = match self.text_align {
+                TextAlign::Right | TextAlign::Left => cols - width,
+                TextAlign::Center => (cols - width) / 2
+            };
+            let space = " ".repeat(size);
             style!(self.foreground_color, self.pane_color)
                 .paint(space)
                 .to_string()
@@ -83,16 +108,46 @@ impl Line {
         let date = style!(self.foreground_color, self.backgound_color).paint(date);
         let time = style!(self.foreground_color, self.backgound_color).paint(time);
 
-        format!(
-            "{}{}{}{}{}{}{}{}",
-            padding,
-            self.separator.0,
-            timezone,
-            self.separator.1,
-            date,
-            self.separator.2,
-            time,
-            self.space
-        )
+        match self.text_align {
+            TextAlign::Right => {
+                format!(
+                    "{}{}{}{}{}{}{}{}",
+                    padding,
+                    self.separator.0,
+                    timezone,
+                    self.separator.1,
+                    date,
+                    self.separator.2,
+                    time,
+                    self.space
+                )
+            },
+            TextAlign::Left => {
+                format!(
+                    "{}{}{}{}{}{}{}{}",
+                    self.space,
+                    self.separator.0,
+                    timezone,
+                    self.separator.1,
+                    date,
+                    self.separator.2,
+                    time,
+                    padding
+                )
+            },
+            TextAlign::Center => {
+                format!(
+                    "{}{}{}{}{}{}{}{}",
+                    padding,
+                    self.separator.0,
+                    timezone,
+                    self.separator.1,
+                    date,
+                    self.separator.2,
+                    time,
+                    padding
+                )
+            }
+        }
     }
 }
