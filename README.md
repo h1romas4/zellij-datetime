@@ -137,6 +137,25 @@ cp -p target/wasm32-wasi/release/zellij-datetime-snip.wasm ~/.config/zellij/plug
 zellij
 ```
 
+Development Test with container
+
+- It can be tested on the main branch of Zellij.
+- There is no confusion with the current Zellij session.
+- You can test the operation of the plugin authority from the initial state.
+
+```bash
+git clone https://github.com/zellij-org/zellij.git
+git clone https://github.com/h1romas4/zellij-datetime
+# build Zellij (A newer version of protobuf-compiler is required)
+cd zellij
+cargo xtask build --release
+# build zellij-datetime
+cd ../zellij-datetime
+cargo build
+# Run with container (podman or docker)
+podman run --name zellij-datetime --env SHELL=/usr/bin/bash -v ../zellij/target/release/:/opt/zellij -v .:/opt/zellij-datetime -w /opt/zellij-datetime -it --rm ubuntu:22.04 /opt/zellij/zellij -l plugin.kb
+```
+
 ## License
 
 MIT License
