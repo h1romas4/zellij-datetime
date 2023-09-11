@@ -47,6 +47,19 @@ layout {
         }
     }
     pane size=1 borderless=true {
+        plugin location="file:./target/wasm32-wasi/debug/zellij-datetime.wasm" {
+            background_color "#000"
+            foreground_color "#0080a0"
+            pane_color "#1e1e1e"
+            // Testing Arrow render
+            arrow_separator1 ""
+            arrow_separator2 ""
+            arrow_separator3 ""
+            padding_adjust -2
+            text_align "left"
+        }
+    }
+    pane size=1 borderless=true {
         plugin location="zellij:tab-bar"
     }
     pane

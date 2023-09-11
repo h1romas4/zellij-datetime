@@ -38,6 +38,13 @@ impl Line {
         self.backgound_color = PaletteColor::Rgb(backgound_color);
         self.foreground_color = PaletteColor::Rgb(foreground_color);
         self.pane_color = PaletteColor::Rgb(pane_color);
+        // text align
+        self.text_align = match text_align {
+            "right" => TextAlign::Right,
+            "left" => TextAlign::Left,
+            "center" => TextAlign::Center,
+            _ => TextAlign::Right,
+        };
         // create charctor
         let bg_1 = self.pane_color;
         let bg_2 = self.backgound_color;
@@ -46,8 +53,16 @@ impl Line {
         let sep_2 = &style!(bg_1, bg_2).bold().paint(&separator.1).to_string();
         let sep_3 = &style!(bg_1, bg_2).bold().paint(&separator.2).to_string();
         let mut sp_0 = String::new();
-        sp_0.push_str(sep_1);
-        sp_0.push_str(space);
+        match self.text_align {
+            TextAlign::Right | TextAlign::Center => {
+                sp_0.push_str(sep_1);
+                sp_0.push_str(space);
+            }
+            TextAlign::Left => {
+                sp_0.push_str(space);
+                sp_0.push_str(sep_1);
+            }
+        }
         let mut sp_1 = String::new();
         sp_1.push_str(space);
         sp_1.push_str(sep_2);
@@ -64,13 +79,6 @@ impl Line {
         // Getting the exact width is too much processing for a plugin,
         // so it can be adjusted by user specification.
         self.padding = length + padding_adjust;
-        // text align
-        self.text_align = match text_align {
-            "right" => TextAlign::Right,
-            "left" => TextAlign::Left,
-            "center" => TextAlign::Center,
-            _ => TextAlign::Right,
-        };
     }
 
     pub fn create(&self, cols: usize, timezone: &str, date: &str, time: &str) -> String {
@@ -117,13 +125,13 @@ impl Line {
                 format!(
                     "{}{}{}{}{}{}{}{}",
                     self.space,
-                    self.separator.0,
                     timezone,
-                    self.separator.1,
-                    date,
                     self.separator.2,
+                    date,
+                    self.separator.1,
                     time,
-                    padding
+                    self.separator.0,
+                    padding,
                 )
             }
             TextAlign::Center => {
