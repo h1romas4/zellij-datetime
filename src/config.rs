@@ -205,7 +205,7 @@ fn parse_color(color: &str) -> Result<(u8, u8, u8), &str> {
 
 fn get_first_char_or_blank(string: &str) -> String {
     if let Some(first) = string.chars().next() {
-        return first.to_string()
+        return first.to_string();
     }
     "".to_string()
 }

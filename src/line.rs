@@ -9,13 +9,13 @@ pub struct Line {
     separator: (String, String, String),
     space: String,
     padding: i32,
-    text_align: TextAlign
+    text_align: TextAlign,
 }
 
 enum TextAlign {
     Right,
     Left,
-    Center
+    Center,
 }
 
 impl Default for TextAlign {
@@ -32,7 +32,7 @@ impl Line {
         pane_color: (u8, u8, u8),
         separator: &(String, String, String),
         padding_adjust: i32,
-        text_align: &str
+        text_align: &str,
     ) {
         // set color
         self.backgound_color = PaletteColor::Rgb(backgound_color);
@@ -42,18 +42,9 @@ impl Line {
         let bg_1 = self.pane_color;
         let bg_2 = self.backgound_color;
         let space = &style!(bg_2, bg_2).paint(" ").to_string();
-        let sep_1 = &style!(bg_2, bg_1)
-            .bold()
-            .paint(&separator.0)
-            .to_string();
-        let sep_2 = &style!(bg_1, bg_2)
-            .bold()
-            .paint(&separator.1)
-            .to_string();
-        let sep_3 = &style!(bg_1, bg_2)
-            .bold()
-            .paint(&separator.2)
-            .to_string();
+        let sep_1 = &style!(bg_2, bg_1).bold().paint(&separator.0).to_string();
+        let sep_2 = &style!(bg_1, bg_2).bold().paint(&separator.1).to_string();
+        let sep_3 = &style!(bg_1, bg_2).bold().paint(&separator.2).to_string();
         let mut sp_0 = String::new();
         sp_0.push_str(sep_1);
         sp_0.push_str(space);
@@ -78,7 +69,7 @@ impl Line {
             "right" => TextAlign::Right,
             "left" => TextAlign::Left,
             "center" => TextAlign::Center,
-            _ => TextAlign::Right
+            _ => TextAlign::Right,
         };
     }
 
@@ -94,7 +85,7 @@ impl Line {
         let padding: String = if cols as isize - width as isize > 0 {
             let size = match self.text_align {
                 TextAlign::Right | TextAlign::Left => cols - width,
-                TextAlign::Center => (cols - width) / 2
+                TextAlign::Center => (cols - width) / 2,
             };
             let space = " ".repeat(size);
             style!(self.foreground_color, self.pane_color)
@@ -121,7 +112,7 @@ impl Line {
                     time,
                     self.space
                 )
-            },
+            }
             TextAlign::Left => {
                 format!(
                     "{}{}{}{}{}{}{}{}",
@@ -134,7 +125,7 @@ impl Line {
                     time,
                     padding
                 )
-            },
+            }
             TextAlign::Center => {
                 format!(
                     "{}{}{}{}{}{}{}{}",
