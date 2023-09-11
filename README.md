@@ -169,6 +169,7 @@ MIT License
 - [x] Support for background color specification.
 - [ ] When a Zellij session is detached and reattached, the plugin stops without getting drawing and timer events. [#2575](https://github.com/zellij-org/zellij/issues/2575)
 - [x] Unnecessary borderlines appear when this plugin is placed at the bottom of the workspace with borderless=true.
+- [ ] Display is disturbed when the screen width is smaller than the display string.
 
 ## Note
 
