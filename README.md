@@ -100,7 +100,7 @@ layout {
 | `foreground_color`   | `"#color"`      | `"#ffffff"`    | It may be adjusted automatically depending on the `background_color`. |
 | `pane_color`         | `"#color"`      | `"#1e1e1e"`    |      |
 | `enable_right_click` | bool            | `false`        | Right-clicking on the clock outputs the string format to stdin; Allow `PermissionType::WriteToStdin` permission when starting the plugin. |
-| `arrow_separator1`   | `"string"`      | `""`          | 🌍 Only the first character. |
+| `arrow_separator1`   | `"string"`      | `""`          | Delimiter string on line. Only the first character. |
 | `arrow_separator2`   | `"string"`      | `""`          | 📅 Only the first character. |
 | `arrow_separator3`   | `"string"`      | `""`          | ⌚ Only the first character. |
 | `padding_adjust`     | `i32`           | `0`            | It can be used to adjust left-justified padding. For example, adjusting the separator width if it is off by full-width. |
