@@ -7,6 +7,10 @@ static DEFAULT_TIMEZONE: &str = "UTC";
 static DEFAULT_BACKGROUND_COLOR: &str = "#0080a0";
 static DEFAULT_FOREGROUND_COLOR: &str = "#ffffff";
 static DEFAULT_PANE_COLOR: &str = "#1e1e1e";
+static DEFAULT_ARROW_SEPARATOR_1: &str = "";
+static DEFAULT_ARROW_SEPARATOR_2: &str = "";
+static DEFAULT_ARROW_SEPARATOR_3: &str = "";
+static DEFAULT_TEXT_ALIGN: &str = "right";
 
 pub struct Config {
     timezone: LinkedHashMap<String, i32>,
@@ -15,6 +19,9 @@ pub struct Config {
     foreground_color: (u8, u8, u8),
     pane_color: (u8, u8, u8),
     enable_right_click: bool,
+    separator: (String, String, String),
+    padding_adjust: i32,
+    text_align: String,
     enable_debug: bool,
 }
 
@@ -30,6 +37,13 @@ impl Default for Config {
             foreground_color: parse_color(DEFAULT_FOREGROUND_COLOR).unwrap(),
             pane_color: parse_color(DEFAULT_PANE_COLOR).unwrap(),
             enable_right_click: false,
+            separator: (
+                DEFAULT_ARROW_SEPARATOR_1.to_string(),
+                DEFAULT_ARROW_SEPARATOR_2.to_string(),
+                DEFAULT_ARROW_SEPARATOR_3.to_string(),
+            ),
+            padding_adjust: 0,
+            text_align: DEFAULT_TEXT_ALIGN.to_string(),
             enable_debug: false,
         }
     }
@@ -93,6 +107,18 @@ impl Config {
         self.enable_right_click
     }
 
+    pub fn get_separator(&self) -> &(String, String, String) {
+        &self.separator
+    }
+
+    pub fn get_padding_adjust(&self) -> i32 {
+        self.padding_adjust
+    }
+
+    pub fn get_text_align(&self) -> &String {
+        &self.text_align
+    }
+
     #[allow(unused)]
     pub fn get_enable_debug(&self) -> bool {
         self.enable_debug
@@ -135,6 +161,21 @@ impl Config {
                 "enable_right_click" => {
                     self.enable_right_click = value.trim().parse().unwrap_or(false);
                 }
+                "arrow_separator1" => {
+                    self.separator.0 = get_first_char_or_blank(value.trim());
+                }
+                "arrow_separator2" => {
+                    self.separator.1 = get_first_char_or_blank(value.trim());
+                }
+                "arrow_separator3" => {
+                    self.separator.2 = get_first_char_or_blank(value.trim());
+                }
+                "padding_adjust" => {
+                    self.padding_adjust = value.trim().parse().unwrap_or(0);
+                }
+                "text_align" => {
+                    self.text_align = value.trim().to_ascii_lowercase().to_string();
+                }
                 "enable_debug" => {
                     self.enable_debug = value.trim().parse().unwrap_or(false);
                 }
@@ -160,4 +201,11 @@ fn parse_color(color: &str) -> Result<(u8, u8, u8), &str> {
         return Ok((color[0], color[1], color[2]));
     }
     Err("Color format parse error")
+}
+
+fn get_first_char_or_blank(string: &str) -> String {
+    if let Some(first) = string.chars().next() {
+        return first.to_string();
+    }
+    "".to_string()
 }

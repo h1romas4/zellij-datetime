@@ -81,6 +81,11 @@ layout {
             foreground_color "#ffffff"
             pane_color "#1e1e1e"
             enable_right_click false
+            arrow_separator1 ""
+            arrow_separator2 ""
+            arrow_separator3 ""
+            padding_adjust 0
+            text_align "right"
         }
     }
 }
@@ -92,9 +97,14 @@ layout {
 | `timezone[2-9]`      | `"name/offset"` | -              |      |
 | `default_timezone`   | `"name"`        | `"UTC"`        |      |
 | `background_color`   | `"#color"`      | `"#0080a0"`    |      |
-| `foreground_color`   | `"#color"`      | `"#ffffff"`    | It may be adjusted automatically depending on the `background_color` |
+| `foreground_color`   | `"#color"`      | `"#ffffff"`    | It may be adjusted automatically depending on the `background_color`. |
 | `pane_color`         | `"#color"`      | `"#1e1e1e"`    |      |
 | `enable_right_click` | bool            | `false`        | Right-clicking on the clock outputs the string format to stdin; Allow `PermissionType::WriteToStdin` permission when starting the plugin. |
+| `arrow_separator1`   | `"string"`      | `""`          | Delimiter string on line. Only the first character. |
+| `arrow_separator2`   | `"string"`      | `""`          | 📅 Only the first character. |
+| `arrow_separator3`   | `"string"`      | `""`          | ⌚ Only the first character. |
+| `padding_adjust`     | `i32`           | `0`            | It can be used to adjust left-justified padding. For example, adjusting the separator width if it is off by full-width. |
+| `text_align`         | `"string"`      | `"right"`      | `right` or `left` or `center` |
 
 ## Build
 
@@ -127,6 +137,25 @@ cp -p target/wasm32-wasi/release/zellij-datetime-snip.wasm ~/.config/zellij/plug
 zellij
 ```
 
+Development Test with container
+
+- It can be tested on the main branch of Zellij.
+- There is no confusion with the current Zellij session.
+- You can test the operation of the plugin authority from the initial state.
+
+```bash
+git clone https://github.com/zellij-org/zellij.git
+git clone https://github.com/h1romas4/zellij-datetime
+# build Zellij (A newer version of protobuf-compiler is required)
+cd zellij
+cargo xtask build --release
+# build zellij-datetime
+cd ../zellij-datetime
+cargo build
+# Run with container (podman or docker)
+podman run --name zellij-datetime --env SHELL=/usr/bin/bash -v ../zellij/target/release/:/opt/zellij -v .:/opt/zellij-datetime -w /opt/zellij-datetime -it --rm ubuntu:22.04 /opt/zellij/zellij -l plugin.kb
+```
+
 ## License
 
 MIT License
@@ -140,6 +169,8 @@ MIT License
 - [x] Support for background color specification.
 - [ ] When a Zellij session is detached and reattached, the plugin stops without getting drawing and timer events. [#2575](https://github.com/zellij-org/zellij/issues/2575)
 - [x] Unnecessary borderlines appear when this plugin is placed at the bottom of the workspace with borderless=true.
+- [ ] Display is disturbed when the screen width is smaller than the display string.
+- [ ] Separate control of the line from control of datetime string generation.
 
 ## Note
 

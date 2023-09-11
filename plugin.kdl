@@ -12,9 +12,16 @@ layout {
             background_color "#0080a0"
             foreground_color "#ffffff"
             pane_color "#1e1e1e"
+            // Testing Arrow
+            arrow_separator1 ""
+            arrow_separator2 ""
+            arrow_separator3 ""
+            padding_adjust 0
             // Testing Plug-in Permissions
             // To be tested at the first interactive query and at the automatic configuration cache.
             enable_right_click true
+            // Testing Text align
+            text_align "right"
             // Debugging options (not yet used)
             enable_debug true
         }
@@ -26,14 +33,38 @@ layout {
     pane size=1 borderless=true {
         plugin location="file:./target/wasm32-wasi/debug/zellij-datetime.wasm" {
             // Testing that the optional keys are sorted
-            timezone4 "JST/+9"
+            timezone4 "日本/+9"
             timezone3 "CEST/+2"
+            // Testing full-width string
+            default_timezone "日本"
+            // Testing Arrow render
+            arrow_separator1 "🌍"
+            arrow_separator2 "📅"
+            arrow_separator3 "⌚"
+            padding_adjust 1
+            pane_color "#0080a0"
+            text_align "center"
+        }
+    }
+    pane size=1 borderless=true {
+        plugin location="file:./target/wasm32-wasi/debug/zellij-datetime.wasm" {
+            timezone1 "CEST/+2"
+            timezone2 "JST/+9"
+            background_color "#000"
+            foreground_color "#0080a0"
+            pane_color "#1e1e1e"
+            // Testing Arrow render
+            arrow_separator1 ""
+            arrow_separator2 ""
+            arrow_separator3 ""
+            padding_adjust -2
+            text_align "left"
         }
     }
     pane size=1 borderless=true {
         plugin location="zellij:tab-bar"
     }
-    pane
+    pane focus=true
     pane command="tail" close_on_exit=true {
         args "-f" "zellij.log"
         cwd "/tmp/zellij-0/zellij-log"
