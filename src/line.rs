@@ -93,6 +93,7 @@ impl Line {
         let padding: String = if cols as isize - width as isize > 0 {
             let size = match self.text_align {
                 TextAlign::Right | TextAlign::Left => cols - width,
+                // TODO: Incorrect calculation for odd-numbered characters.
                 TextAlign::Center => (cols - width) / 2,
             };
             let space = " ".repeat(size);
