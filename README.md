@@ -22,11 +22,11 @@ zellij 0.38.0
 Preparation of Plug-in deployment destination:
 
 ```bash
-# create configration directory
+# create configuration directory
 mkdir -p ~/.config/zellij/layouts/
 mkdir -p ~/.config/zellij/plugins/
 # If you have already created a layout file, you do not need to do the following.
-# export default layaut (Be careful not to overwrite your settings)
+# export default layout (Be careful not to overwrite your settings)
 zellij setup --dump-layout default > ~/.config/zellij/layouts/default.kdl
 ```
 [Download zellij-datetime.wasm](https://github.com/h1romas4/zellij-datetime/releases/latest/download/zellij-datetime.wasm):
