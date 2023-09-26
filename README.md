@@ -153,7 +153,15 @@ cargo xtask build --release
 cd ../zellij-datetime
 cargo build
 # Run with container (podman or docker)
-podman run --name zellij-datetime --env SHELL=/usr/bin/bash -v ../zellij/target/release/:/opt/zellij -v .:/opt/zellij-datetime -w /opt/zellij-datetime -it --rm ubuntu:22.04 /opt/zellij/zellij -l plugin.kb
+podman run \
+    --name zellij-datetime \
+    --env SHELL=/usr/bin/bash \
+    -v ../zellij/target/release/:/opt/zellij \
+    -v .:/opt/zellij-datetime \
+    -w /opt/zellij-datetime \
+    -it --rm \
+    ubuntu:22.04 \
+    /opt/zellij/zellij -l plugin.kb
 ```
 
 ## License
