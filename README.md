@@ -129,7 +129,7 @@ Production
 cargo install wasm-snip
 # Build
 cargo build --release
-# Remove debug symbles and replaces unreachable.
+# Remove debug symbols and replaces unreachable.
 wasm-snip target/wasm32-wasi/release/zellij-datetime.wasm -o target/wasm32-wasi/release/zellij-datetime-snip.wasm
 # Deploy plugin directory
 cp -p target/wasm32-wasi/release/zellij-datetime-snip.wasm ~/.config/zellij/plugins/zellij-datetime.wasm
