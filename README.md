@@ -184,7 +184,7 @@ MIT License
 
 ### Operation log in riscv64
 
-At this time, RISC-V is not yet supported in Wasmer 2.3 used by Zellij. RISC-V has been supported since Wasmer 3.2.
+At this time, RISC-V is not yet supported in Wasmer 3.1.1 used by Zellij. RISC-V has been supported since Wasmer 3.2.
 
 ```bash
 $ uname -a
