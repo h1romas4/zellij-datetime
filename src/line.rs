@@ -45,7 +45,7 @@ impl Line {
             "center" => TextAlign::Center,
             _ => TextAlign::Right,
         };
-        // create charctor
+        // create character
         let bg_1 = self.pane_color;
         let bg_2 = self.background_color;
         let space = &style!(bg_2, bg_2).paint(" ").to_string();
