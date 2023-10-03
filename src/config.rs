@@ -15,7 +15,7 @@ static DEFAULT_TEXT_ALIGN: &str = "right";
 pub struct Config {
     timezone: LinkedHashMap<String, i32>,
     default_timezone: String,
-    backgound_color: (u8, u8, u8),
+    background_color: (u8, u8, u8),
     foreground_color: (u8, u8, u8),
     pane_color: (u8, u8, u8),
     enable_right_click: bool,
@@ -33,7 +33,7 @@ impl Default for Config {
         Config {
             timezone,
             default_timezone: default_timezone.to_string(),
-            backgound_color: parse_color(DEFAULT_BACKGROUND_COLOR).unwrap(),
+            background_color: parse_color(DEFAULT_BACKGROUND_COLOR).unwrap(),
             foreground_color: parse_color(DEFAULT_FOREGROUND_COLOR).unwrap(),
             pane_color: parse_color(DEFAULT_PANE_COLOR).unwrap(),
             enable_right_click: false,
@@ -91,8 +91,8 @@ impl Config {
         }
     }
 
-    pub fn get_backgound_color(&self) -> (u8, u8, u8) {
-        self.backgound_color
+    pub fn get_background_color(&self) -> (u8, u8, u8) {
+        self.background_color
     }
 
     pub fn get_foreground_color(&self) -> (u8, u8, u8) {
@@ -145,7 +145,7 @@ impl Config {
                 }
                 "background_color" => {
                     if let Ok(color) = parse_color(value) {
-                        self.backgound_color = (color.0, color.1, color.2);
+                        self.background_color = (color.0, color.1, color.2);
                     }
                 }
                 "foreground_color" => {

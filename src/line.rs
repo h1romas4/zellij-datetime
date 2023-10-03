@@ -3,7 +3,7 @@ use zellij_tile_utils::style;
 
 #[derive(Default)]
 pub struct Line {
-    backgound_color: PaletteColor,
+    background_color: PaletteColor,
     foreground_color: PaletteColor,
     pane_color: PaletteColor,
     separator: (String, String, String),
@@ -27,7 +27,7 @@ impl Default for TextAlign {
 impl Line {
     pub fn update_style(
         &mut self,
-        backgound_color: (u8, u8, u8),
+        background_color: (u8, u8, u8),
         foreground_color: (u8, u8, u8),
         pane_color: (u8, u8, u8),
         separator: &(String, String, String),
@@ -35,7 +35,7 @@ impl Line {
         text_align: &str,
     ) {
         // set color
-        self.backgound_color = PaletteColor::Rgb(backgound_color);
+        self.background_color = PaletteColor::Rgb(background_color);
         self.foreground_color = PaletteColor::Rgb(foreground_color);
         self.pane_color = PaletteColor::Rgb(pane_color);
         // text align
@@ -45,9 +45,9 @@ impl Line {
             "center" => TextAlign::Center,
             _ => TextAlign::Right,
         };
-        // create charctor
+        // create character
         let bg_1 = self.pane_color;
-        let bg_2 = self.backgound_color;
+        let bg_2 = self.background_color;
         let space = &style!(bg_2, bg_2).paint(" ").to_string();
         let sep_1 = &style!(bg_2, bg_1).bold().paint(&separator.0).to_string();
         let sep_2 = &style!(bg_1, bg_2).bold().paint(&separator.1).to_string();
@@ -93,6 +93,7 @@ impl Line {
         let padding: String = if cols as isize - width as isize > 0 {
             let size = match self.text_align {
                 TextAlign::Right | TextAlign::Left => cols - width,
+                // TODO: Incorrect calculation for odd-numbered characters.
                 TextAlign::Center => (cols - width) / 2,
             };
             let space = " ".repeat(size);
@@ -103,9 +104,9 @@ impl Line {
             String::new()
         };
 
-        let timezone = style!(self.foreground_color, self.backgound_color).paint(timezone);
-        let date = style!(self.foreground_color, self.backgound_color).paint(date);
-        let time = style!(self.foreground_color, self.backgound_color).paint(time);
+        let timezone = style!(self.foreground_color, self.background_color).paint(timezone);
+        let date = style!(self.foreground_color, self.background_color).paint(date);
+        let time = style!(self.foreground_color, self.background_color).paint(time);
 
         match self.text_align {
             TextAlign::Right => {

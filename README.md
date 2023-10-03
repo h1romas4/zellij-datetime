@@ -22,11 +22,11 @@ zellij 0.38.0
 Preparation of Plug-in deployment destination:
 
 ```bash
-# create configration directory
+# create configuration directory
 mkdir -p ~/.config/zellij/layouts/
 mkdir -p ~/.config/zellij/plugins/
 # If you have already created a layout file, you do not need to do the following.
-# export default layaut (Be careful not to overwrite your settings)
+# export default layout (Be careful not to overwrite your settings)
 zellij setup --dump-layout default > ~/.config/zellij/layouts/default.kdl
 ```
 [Download zellij-datetime.wasm](https://github.com/h1romas4/zellij-datetime/releases/latest/download/zellij-datetime.wasm):
@@ -103,7 +103,7 @@ layout {
 | `arrow_separator1`   | `"string"`      | `""`          | Delimiter string on line. Only the first character. |
 | `arrow_separator2`   | `"string"`      | `""`          | 📅 Only the first character. |
 | `arrow_separator3`   | `"string"`      | `""`          | ⌚ Only the first character. |
-| `padding_adjust`     | `i32`           | `0`            | It can be used to adjust left-justified padding. For example, adjusting the separator width if it is off by full-width. |
+| `padding_adjust`     | i32             | `0`            | It can be used to adjust left-justified padding. For example, adjusting the separator width if it is off by full-width. |
 | `text_align`         | `"string"`      | `"right"`      | `right` or `left` or `center` |
 
 ## Build
@@ -129,7 +129,7 @@ Production
 cargo install wasm-snip
 # Build
 cargo build --release
-# Remove debug symbles and replaces unreachable.
+# Remove debug symbols and replaces unreachable.
 wasm-snip target/wasm32-wasi/release/zellij-datetime.wasm -o target/wasm32-wasi/release/zellij-datetime-snip.wasm
 # Deploy plugin directory
 cp -p target/wasm32-wasi/release/zellij-datetime-snip.wasm ~/.config/zellij/plugins/zellij-datetime.wasm
@@ -153,7 +153,15 @@ cargo xtask build --release
 cd ../zellij-datetime
 cargo build
 # Run with container (podman or docker)
-podman run --name zellij-datetime --env SHELL=/usr/bin/bash -v ../zellij/target/release/:/opt/zellij -v .:/opt/zellij-datetime -w /opt/zellij-datetime -it --rm ubuntu:22.04 /opt/zellij/zellij -l plugin.kb
+podman run \
+    --name zellij-datetime \
+    --env SHELL=/usr/bin/bash \
+    -v ../zellij/target/release/:/opt/zellij \
+    -v .:/opt/zellij-datetime \
+    -w /opt/zellij-datetime \
+    -it --rm \
+    ubuntu:22.04 \
+    /opt/zellij/zellij -l plugin.kb
 ```
 
 ## License
@@ -176,7 +184,7 @@ MIT License
 
 ### Operation log in riscv64
 
-At this time, RISC-V is not yet supported in Wasmer 2.3 used by Zellij. RISC-V has been supported since Wasmer 3.2.
+At this time, RISC-V is not yet supported in Wasmer 3.1.1 used by Zellij. RISC-V has been supported since Wasmer 3.2.
 
 ```bash
 $ uname -a

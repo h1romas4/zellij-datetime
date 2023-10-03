@@ -29,7 +29,7 @@ impl ZellijPlugin for State {
         self.config.configuration(&configuration);
         self.reset_default_timezone();
         self.line.update_style(
-            self.config.get_backgound_color(),
+            self.config.get_background_color(),
             self.config.get_foreground_color(),
             self.config.get_pane_color(),
             self.config.get_separator(),
