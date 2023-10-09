@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "rust-lang.rust-analyzer",
+        "EditorConfig.EditorConfig",
+        "kdl-org.kdl"
+    ]
+}
