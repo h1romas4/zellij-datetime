@@ -137,7 +137,7 @@ cp -p target/wasm32-wasi/release/zellij-datetime-snip.wasm ~/.config/zellij/plug
 zellij
 ```
 
-Development Test with container
+Development on Ubuntu 22.04 with container
 
 - It can be tested on the main branch of Zellij.
 - There is no confusion with the current Zellij session.
