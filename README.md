@@ -178,7 +178,7 @@ MIT License
 - [ ] When a Zellij session is detached and reattached, the plugin stops without getting drawing and timer events. [#2575](https://github.com/zellij-org/zellij/issues/2575)
 - [x] Unnecessary borderlines appear when this plugin is placed at the bottom of the workspace with borderless=true.
 - [ ] Display is disturbed when the screen width is smaller than the display string.
-- [ ] Separate control of the line from control of datetime string generation.
+- [ ] ~~Separate control of the line from control of datetime string generation.~~ Support for Zellij UI components. [Rendering a UI - Zellij User Guide](https://zellij.dev/documentation/plugin-ui-rendering.html)
 
 ## Note
 
