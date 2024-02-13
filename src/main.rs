@@ -14,7 +14,7 @@ static INTERVAL_TIME: f64 = 1.0;
 struct State {
     now: Option<DateTime<Utc>>,
     timezone: String,
-    timezone_offset: i32,
+    timezone_offset: f64,
     before_minute: u32,
     visible: bool,
     line: Line,
@@ -164,8 +164,10 @@ impl State {
     }
 
     fn now(&self) -> Option<DateTime<FixedOffset>> {
-        self.now
-            .map(|now| now.with_timezone(&FixedOffset::east(&self.timezone_offset * 3600)))
+        // `as i32` performs automatic truncation and saturation as of Rust 1.45.0
+        self.now.map(|now| {
+            now.with_timezone(&FixedOffset::east((&self.timezone_offset * 3600.0) as i32))
+        })
     }
 
     fn write_now(&self) {
