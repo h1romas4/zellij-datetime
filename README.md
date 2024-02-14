@@ -76,6 +76,7 @@ layout {
             timezone2 "UTC/0"
             timezone3 "CEST/+2"
             timezone4 "JST/+9"
+            timezone5 "NPT/+5.75"
             default_timezone "JST"
             background_color "#0080a0"
             foreground_color "#ffffff"

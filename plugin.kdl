@@ -6,6 +6,7 @@ layout {
             timezone2 "UTC/0"
             timezone3 "CEST/+2"
             timezone4 "JST/+9"
+            timezone5 "NPT/+5.75"
             // Testing that it will be in the specified timezone instead of timezone1
             default_timezone "JST"
             // Testing the Color Parser
