@@ -13,7 +13,7 @@ static DEFAULT_ARROW_SEPARATOR_3: &str = "";
 static DEFAULT_TEXT_ALIGN: &str = "right";
 
 pub struct Config {
-    timezone: LinkedHashMap<String, i32>,
+    timezone: LinkedHashMap<String, f64>,
     default_timezone: String,
     background_color: (u8, u8, u8),
     foreground_color: (u8, u8, u8),
@@ -28,8 +28,8 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         let default_timezone = DEFAULT_TIMEZONE;
-        let mut timezone: LinkedHashMap<String, i32> = LinkedHashMap::new();
-        timezone.insert(default_timezone.to_string(), 0);
+        let mut timezone: LinkedHashMap<String, f64> = LinkedHashMap::new();
+        timezone.insert(default_timezone.to_string(), 0.0);
         Config {
             timezone,
             default_timezone: default_timezone.to_string(),
@@ -84,10 +84,10 @@ impl Config {
         timezone.to_string()
     }
 
-    pub fn get_timezone_offset(&self, timezone: &str) -> i32 {
+    pub fn get_timezone_offset(&self, timezone: &str) -> f64 {
         match self.timezone.get(timezone) {
             Some(value) => *value,
-            None => 0,
+            None => 0.0,
         }
     }
 
@@ -125,7 +125,7 @@ impl Config {
     }
 
     pub fn configuration(&mut self, configuration: &BTreeMap<String, String>) {
-        let mut timezone: LinkedHashMap<String, i32> = LinkedHashMap::new();
+        let mut timezone: LinkedHashMap<String, f64> = LinkedHashMap::new();
         let mut default_timezone: Option<String> = None;
 
         for (key, value) in configuration {
@@ -135,7 +135,7 @@ impl Config {
                 | "timezone6" | "timezone7" | "timezone8" | "timezone9" => {
                     let value: Vec<&str> = value.split('/').collect();
                     if value.len() == 2 {
-                        if let Ok(offset) = value[1].parse() {
+                        if let Ok(offset) = value[1].parse::<f64>() {
                             timezone.insert(value[0].trim().to_string(), offset);
                         }
                     }
