@@ -1,6 +1,6 @@
 [package]
 name = "zellij-datetime"
-version = "0.20.0"
+version = "0.19.0"
 authors = ["h1romas4 <h1romas4@gmail.com>"]
 edition = "2021"
 
