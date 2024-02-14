@@ -2871,9 +2871,9 @@ dependencies = [
 
 [[package]]
 name = "zellij-tile"
-version = "0.38.1"
+version = "0.38.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68b51700a828e8a2bf2eb82d62b260932576fa1882494c2af8395f5f4794a15f"
+checksum = "23245bbef7a6dd1c6e44a73b697fcd4b15eac5d0812dfee4b633ae425c8c1ba3"
 dependencies = [
  "clap",
  "serde",
@@ -2885,18 +2885,18 @@ dependencies = [
 
 [[package]]
 name = "zellij-tile-utils"
-version = "0.38.1"
+version = "0.38.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de124f0c269a7d4433a60e6d5cface9b4684d5be819b6ea7dacdbedb6e636693"
+checksum = "26644ad1285f7db782245e6a870c68431e91f545462837718f2b45a1e29e3e67"
 dependencies = [
  "ansi_term",
 ]
 
 [[package]]
 name = "zellij-utils"
-version = "0.38.1"
+version = "0.38.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "60c68881b9892c36e90031e7deb36a4fc8e11f6f95c468e19e900f54b6ed94de"
+checksum = "d2c255271eab3868f67bb0efa4d0af5bf0aa2ddbedd3b79a83fc258c1e57e15a"
 dependencies = [
  "anyhow",
  "async-channel",
