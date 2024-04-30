@@ -15,6 +15,8 @@ static DEFAULT_TEXT_ALIGN: &str = "right";
 pub struct Config {
     timezone: LinkedHashMap<String, f64>,
     default_timezone: String,
+    date_format: String,
+    time_format: String,
     background_color: (u8, u8, u8),
     foreground_color: (u8, u8, u8),
     pane_color: (u8, u8, u8),
@@ -33,6 +35,8 @@ impl Default for Config {
         Config {
             timezone,
             default_timezone: default_timezone.to_string(),
+            date_format: "%Y-%m-%d %a".to_string(),
+            time_format: "%H:%M".to_string(),
             background_color: parse_color(DEFAULT_BACKGROUND_COLOR).unwrap(),
             foreground_color: parse_color(DEFAULT_FOREGROUND_COLOR).unwrap(),
             pane_color: parse_color(DEFAULT_PANE_COLOR).unwrap(),
@@ -91,6 +95,14 @@ impl Config {
         }
     }
 
+    pub fn get_date_format(&self) -> &String {
+        &self.date_format
+    }
+
+    pub fn get_time_format(&self) -> &String {
+        &self.time_format
+    }
+
     pub fn get_background_color(&self) -> (u8, u8, u8) {
         self.background_color
     }
@@ -142,6 +154,12 @@ impl Config {
                 }
                 "default_timezone" => {
                     default_timezone = Some(value.trim().to_string());
+                }
+                "date_format" => {
+                    self.date_format = value.trim().to_string();
+                }
+                "time_format" => {
+                    self.time_format = value.trim().to_string();
                 }
                 "background_color" => {
                     if let Ok(color) = parse_color(value) {

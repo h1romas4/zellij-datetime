@@ -9,6 +9,9 @@ layout {
             timezone5 "NPT/+5.75"
             // Testing that it will be in the specified timezone instead of timezone1
             default_timezone "JST"
+            // Specify custom format strings
+            date_format "%Y/%m/%d %A"
+            time_format "%I:%M %p"
             // Testing the Color Parser
             background_color "#0080a0"
             foreground_color "#ffffff"
