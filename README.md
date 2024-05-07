@@ -166,7 +166,7 @@ podman run \
     -w /opt/zellij-datetime \
     -it --rm \
     mcr.microsoft.com/devcontainers/base:ubuntu-22.04 \
-    /opt/zellij/zellij -l plugin.kb
+    /opt/zellij/zellij -l plugin.kdl
 ```
 
 ## License
