@@ -12,7 +12,7 @@ static DEFAULT_ARROW_SEPARATOR_2: &str = "";
 static DEFAULT_ARROW_SEPARATOR_3: &str = "";
 static DEFAULT_TEXT_ALIGN: &str = "right";
 static DEFAULT_DATE_FORMAT: &str = "%Y-%m-%d %a";
-static DEFAULT_TIME_ALIGN: &str = "%H:%M";
+static DEFAULT_TIME_FORMAT: &str = "%H:%M";
 
 pub struct Config {
     timezone: LinkedHashMap<String, f64>,
@@ -38,7 +38,7 @@ impl Default for Config {
             timezone,
             default_timezone: default_timezone.to_string(),
             date_format: DEFAULT_DATE_FORMAT.to_string(),
-            time_format: DEFAULT_TIME_ALIGN.to_string(),
+            time_format: DEFAULT_TIME_FORMAT.to_string(),
             background_color: parse_color(DEFAULT_BACKGROUND_COLOR).unwrap(),
             foreground_color: parse_color(DEFAULT_FOREGROUND_COLOR).unwrap(),
             pane_color: parse_color(DEFAULT_PANE_COLOR).unwrap(),
