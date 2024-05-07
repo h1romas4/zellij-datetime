@@ -100,7 +100,7 @@ layout {
 | `timezone[2-9]`      | `"name/offset"` | -              |      |
 | `default_timezone`   | `"name"`        | `"UTC"`        |      |
 | `date_format`        | [chrono::format::strftime](https://docs.rs/chrono/latest/chrono/format/strftime/index.html) | `%Y-%m-%d %a` |      |
-| `time_format`        | [chrono::format::strftime](https://docs.rs/chrono/latest/chrono/format/strftime/index.html) | `%H:%M`       |      |
+| `time_format`        | [chrono::format::strftime](https://docs.rs/chrono/latest/chrono/format/strftime/index.html) | `%H:%M`       | The screen refreshes every minute. |
 | `background_color`   | `"#color"`      | `"#0080a0"`    |      |
 | `foreground_color`   | `"#color"`      | `"#ffffff"`    | It may be adjusted automatically depending on the `background_color`. |
 | `pane_color`         | `"#color"`      | `"#1e1e1e"`    |      |
