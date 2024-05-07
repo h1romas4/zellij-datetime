@@ -127,18 +127,8 @@ impl ZellijPlugin for State {
 
     fn render(&mut self, _rows: usize, cols: usize) {
         if let Some(now) = self.now() {
-            let date = format!(
-                "{year}-{month:02}-{day:02} {weekday}",
-                year = now.year(),
-                month = now.month(),
-                day = now.day(),
-                weekday = now.weekday(),
-            );
-            let time = format!(
-                "{hour:02}:{minute:02}",
-                hour = now.hour(),
-                minute = now.minute(),
-            );
+            let date = now.format(self.config.get_date_format()).to_string();
+            let time = now.format(self.config.get_time_format()).to_string();
             print!("{}", self.line.create(cols, &self.timezone, &date, &time));
         }
     }
