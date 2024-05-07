@@ -78,6 +78,8 @@ layout {
             timezone4 "JST/+9"
             timezone5 "NPT/+5.75"
             default_timezone "JST"
+            date_format "%Y/%m/%d %A"
+            time_format "%I:%M %p"
             background_color "#0080a0"
             foreground_color "#ffffff"
             pane_color "#1e1e1e"
