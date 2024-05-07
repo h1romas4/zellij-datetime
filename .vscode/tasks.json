@@ -35,7 +35,7 @@
                 // "/usr/bin/bash"
                 "/opt/zellij/zellij",
                 "-l",
-                "plugin.kbl"
+                "plugin.kdl"
             ],
             "presentation": {
                 "reveal": "always",
