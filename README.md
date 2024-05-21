@@ -44,6 +44,8 @@ Set the full path to `zellij-datetime.wasm` in the `~/.config/zellij/layouts/def
 vi ~/.config/zellij/layouts/default.kdl
 ```
 
+Example - Basic layout:
+
 ```kdl
 layout {
     pane size=1 borderless=true {
@@ -51,6 +53,25 @@ layout {
     }
     pane size=1 borderless=true {
         plugin location="zellij:tab-bar"
+    }
+    pane
+    pane size=2 borderless=true {
+        plugin location="zellij:status-bar"
+    }
+}
+```
+
+Example - The same line as the other bar(s):
+
+```kdl
+layout {
+    pane size=1 split_direction="vertical" {
+        pane size="75%" borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane size="25%" borderless=true {
+            plugin location="file:/home/hiromasa/.config/zellij/plugins/zellij-datetime.wasm"
+        }
     }
     pane
     pane size=2 borderless=true {
