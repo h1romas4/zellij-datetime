@@ -10,6 +10,9 @@ pub struct Line {
     space: String,
     padding: i32,
     text_align: TextAlign,
+    display_timezone: bool,
+    display_calendar: bool,
+    display_clock: bool,
 }
 
 enum TextAlign {
@@ -25,6 +28,7 @@ impl Default for TextAlign {
 }
 
 impl Line {
+    #[allow(clippy::too_many_arguments)]
     pub fn update_style(
         &mut self,
         background_color: (u8, u8, u8),
@@ -33,6 +37,9 @@ impl Line {
         separator: &(String, String, String),
         padding_adjust: i32,
         text_align: &str,
+        display_timezone: bool,
+        display_calendar: bool,
+        display_clock: bool,
     ) {
         // set color
         self.background_color = PaletteColor::Rgb(background_color);
@@ -79,6 +86,10 @@ impl Line {
         // Getting the exact width is too much processing for a plugin,
         // so it can be adjusted by user specification.
         self.padding = length + padding_adjust;
+        // display
+        self.display_timezone = display_timezone;
+        self.display_calendar = display_calendar;
+        self.display_clock = display_clock;
     }
 
     pub fn create(&self, cols: usize, timezone: &str, date: &str, time: &str) -> String {

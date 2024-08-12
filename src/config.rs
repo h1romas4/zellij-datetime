@@ -26,6 +26,9 @@ pub struct Config {
     separator: (String, String, String),
     padding_adjust: i32,
     text_align: String,
+    display_timezone: bool,
+    display_calendar: bool,
+    display_clock: bool,
     enable_debug: bool,
 }
 
@@ -50,6 +53,9 @@ impl Default for Config {
             ),
             padding_adjust: 0,
             text_align: DEFAULT_TEXT_ALIGN.to_string(),
+            display_timezone: true,
+            display_calendar: true,
+            display_clock: true,
             enable_debug: false,
         }
     }
@@ -133,6 +139,18 @@ impl Config {
         &self.text_align
     }
 
+    pub fn get_display_timezone(&self) -> bool {
+        self.display_timezone
+    }
+
+    pub fn get_display_calendar(&self) -> bool {
+        self.display_calendar
+    }
+
+    pub fn get_display_clock(&self) -> bool {
+        self.display_clock
+    }
+
     #[allow(unused)]
     pub fn get_enable_debug(&self) -> bool {
         self.enable_debug
@@ -195,6 +213,15 @@ impl Config {
                 }
                 "text_align" => {
                     self.text_align = value.trim().to_ascii_lowercase().to_string();
+                }
+                "display_timezone" => {
+                    self.display_timezone = value.trim().parse().unwrap_or(true);
+                }
+                "display_calendar" => {
+                    self.display_calendar = value.trim().parse().unwrap_or(true);
+                }
+                "display_clock" => {
+                    self.display_clock = value.trim().parse().unwrap_or(true);
                 }
                 "enable_debug" => {
                     self.enable_debug = value.trim().parse().unwrap_or(false);

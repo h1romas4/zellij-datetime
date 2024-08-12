@@ -35,6 +35,9 @@ impl ZellijPlugin for State {
             self.config.get_separator(),
             self.config.get_padding_adjust(),
             self.config.get_text_align(),
+            self.config.get_display_timezone(),
+            self.config.get_display_calendar(),
+            self.config.get_display_clock(),
         );
         // initialize state
         self.before_minute = u32::MAX;
