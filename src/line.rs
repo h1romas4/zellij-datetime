@@ -98,6 +98,7 @@ impl Line {
             .chars()
             .map(|c| if c.is_ascii() { 1 } else { 2 })
             .sum::<usize>();
+        // TODO: display Calculation of width taking into account boolean values.
         let width = ((timezone_len + date.len() + time.len()) as i32) + self.padding;
         let width = width as usize;
         // There are cases where cols may be declared momentarily low at render time.
@@ -119,6 +120,7 @@ impl Line {
         let date = style!(self.foreground_color, self.background_color).paint(date);
         let time = style!(self.foreground_color, self.background_color).paint(time);
 
+        // TODO: Generate separators and strings taking into account the display state.
         match self.text_align {
             TextAlign::Right => {
                 format!(
