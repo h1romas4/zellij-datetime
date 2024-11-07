@@ -10,11 +10,11 @@ Zellij's plugin system leverages WebAssembly/WASI, and this plugin will also wor
 
 ## Require
 
-* Zellij `0.38.0` or later
+* Zellij `0.41.1` or later
 
 ```
 $ zellij -V
-zellij 0.38.0
+zellij 0.41.1
 ```
 
 ## Setup
@@ -205,31 +205,3 @@ MIT License
 - [x] Unnecessary borderlines appear when this plugin is placed at the bottom of the workspace with borderless=true.
 - [ ] Display is disturbed when the screen width is smaller than the display string.
 - [ ] ~~Separate control of the line from control of datetime string generation.~~ Support for Zellij UI components. [Rendering a UI - Zellij User Guide](https://zellij.dev/documentation/plugin-ui-rendering.html)
-
-## Note
-
-### Operation log in riscv64
-
-At this time, RISC-V is not yet supported in Wasmer 3.1.1 used by Zellij. RISC-V has been supported since Wasmer 3.2.
-
-```bash
-$ uname -a
-Linux lpi4a 5.10.113-gbb4691fe5572 # riscv64 GNU/Linux
-$ arch
-riscv64
-$ rustc -V
-rustc 1.65.0 #riscv64gc-unknown-linux-gnu
-$ zellij -V
-zellij 0.36.0
-$ zellij
-Error occurred in server:
-
-  × Thread 'async-std/runtime' panicked.
-  ├─▶ At /home/sipeed/.cargo/registry/src/github.com-1ecc6299db9ec823/wasmer-compiler-cranelift-2.3.0/src/config.rs:73:45
-  ╰─▶ construct Cranelift ISA for triple: Unsupported
-  help: If you are seeing this message, it means that something went wrong.
-
-        -> To get additional information, check the log at: /tmp/zellij-1001/zellij-log/zellij.log
-        -> To see a backtrace next time, reproduce the error with: RUST_BACKTRACE=1 zellij [...]
-        -> To help us fix this, please open an issue: https://github.com/zellij-org/zellij/issues
-```
