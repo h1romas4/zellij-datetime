@@ -38,14 +38,14 @@ jobs:
 
     - name: Optimize
       run: |
-        TARGET=target/wasm32-wasi/release/zellij-datetime.wasm
+        TARGET=target/wasm32-wasip1/release/zellij-datetime.wasm
         wasm-snip ${TARGET} -o ${TARGET}.snip.wasm
         rm ${TARGET}
         mv ${TARGET}.snip.wasm ${TARGET}
 
     - name: Check
       run: |
-        TARGET=target/wasm32-wasi/release/zellij-datetime.wasm
+        TARGET=target/wasm32-wasip1/release/zellij-datetime.wasm
         ls -laF ${TARGET}
         file ${TARGET} | grep WebAssembly | grep 'version 0x1'
         md5sum ${TARGET}
@@ -53,5 +53,5 @@ jobs:
     - uses: ncipollo/release-action@v1
       if: ${{ inputs.release }}
       with:
-        artifacts: "target/wasm32-wasi/release/zellij-datetime.wasm"
+        artifacts: "target/wasm32-wasip1/release/zellij-datetime.wasm"
         token: ${{ secrets.GITHUB_TOKEN }}
