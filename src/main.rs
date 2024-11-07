@@ -77,6 +77,8 @@ impl ZellijPlugin for State {
             }
             Event::Visible(visible) => {
                 // TODO:
+                // Visible does not seem to be called in Zellij 0.41.
+                //
                 // If the Zellij session is detached, it is called with false,
                 // but if it is reattached, this event is not fired.
                 // Working on a way to restart the timer when it is reattached.
@@ -126,6 +128,13 @@ impl ZellijPlugin for State {
     }
 
     fn render(&mut self, _rows: usize, cols: usize) {
+        // TODO:
+        // It seems that render is always called the first time regardless of should_render
+        //  in Zellij 0.41 and later.
+        if !self.visible {
+            self.visible = true;
+            set_timeout(0.0);
+        }
         if let Some(now) = self.now() {
             let date = now.format(self.config.get_date_format()).to_string();
             let time = now.format(self.config.get_time_format()).to_string();
