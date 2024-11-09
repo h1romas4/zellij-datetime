@@ -55,7 +55,7 @@ layout {
         plugin location="zellij:tab-bar"
     }
     pane
-    pane size=2 borderless=true {
+    pane size=1 borderless=true {
         plugin location="zellij:status-bar"
     }
 }
@@ -74,7 +74,7 @@ layout {
         }
     }
     pane
-    pane size=2 borderless=true {
+    pane size=1 borderless=true {
         plugin location="zellij:status-bar"
     }
 }
