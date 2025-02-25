@@ -186,7 +186,7 @@ podman run \
     -v .:/opt/zellij-datetime \
     -w /opt/zellij-datetime \
     -it --rm \
-    mcr.microsoft.com/devcontainers/base:ubuntu-22.04 \
+    mcr.microsoft.com/devcontainers/base:ubuntu-24.04 \
     /opt/zellij/zellij -l plugin.kdl
 ```
 

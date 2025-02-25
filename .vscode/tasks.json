@@ -31,7 +31,7 @@
                 "/opt/zellij-datetime",
                 "-it",
                 "--rm",
-                "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+                "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
                 // "/usr/bin/bash"
                 "/opt/zellij/zellij",
                 "-l",
