@@ -15,7 +15,7 @@ layout {
             // Testing the Color Parser
             background_color "#0080a0"
             foreground_color "#ffffff"
-            pane_color "#1e1e1e"
+            pane_color "#1a1b26"
             // Testing Arrow
             arrow_separator1 ""
             arrow_separator2 ""
@@ -56,7 +56,7 @@ layout {
             timezone2 "JST/+9"
             background_color "#000"
             foreground_color "#0080a0"
-            pane_color "#1e1e1e"
+            pane_color "#1a1b26"
             // Testing Arrow render
             arrow_separator1 ""
             arrow_separator2 ""

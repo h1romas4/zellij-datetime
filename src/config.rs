@@ -6,7 +6,7 @@ use linked_hash_map::LinkedHashMap;
 static DEFAULT_TIMEZONE: &str = "UTC";
 static DEFAULT_BACKGROUND_COLOR: &str = "#0080a0";
 static DEFAULT_FOREGROUND_COLOR: &str = "#ffffff";
-static DEFAULT_PANE_COLOR: &str = "#1e1e1e";
+static DEFAULT_PANE_COLOR: &str = "#1a1b26";
 static DEFAULT_ARROW_SEPARATOR_1: &str = "";
 static DEFAULT_ARROW_SEPARATOR_2: &str = "";
 static DEFAULT_ARROW_SEPARATOR_3: &str = "";

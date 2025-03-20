@@ -103,7 +103,7 @@ layout {
             time_format "%I:%M %p"
             background_color "#0080a0"
             foreground_color "#ffffff"
-            pane_color "#1e1e1e"
+            pane_color "#1a1b26"
             enable_right_click false
             arrow_separator1 ""
             arrow_separator2 ""
@@ -124,7 +124,7 @@ layout {
 | `time_format`        | [chrono::format::strftime](https://docs.rs/chrono/latest/chrono/format/strftime/index.html) | `"%H:%M"`       | The screen refreshes every minute. |
 | `background_color`   | `"#color"`      | `"#0080a0"`    |      |
 | `foreground_color`   | `"#color"`      | `"#ffffff"`    | It may be adjusted automatically depending on the `background_color`. |
-| `pane_color`         | `"#color"`      | `"#1e1e1e"`    |      |
+| `pane_color`         | `"#color"`      | `"#1a1b26"`    |      |
 | `enable_right_click` | bool            | `false`        | Right-clicking on the clock outputs the string format to stdin; Allow `PermissionType::WriteToStdin` permission when starting the plugin. |
 | `arrow_separator1`   | `"string"`      | `""`          | Delimiter string on line. Only the first character. |
 | `arrow_separator2`   | `"string"`      | `""`          | 📅 Only the first character. |
