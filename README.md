@@ -49,7 +49,7 @@ Example - Basic layout:
 ```kdl
 layout {
     pane size=1 borderless=true {
-        plugin location="file:/home/hiromasa/.config/zellij/plugins/zellij-datetime.wasm"
+        plugin location="file:/home/$USER/.config/zellij/plugins/zellij-datetime.wasm"
     }
     pane size=1 borderless=true {
         plugin location="zellij:tab-bar"
@@ -70,7 +70,7 @@ layout {
             plugin location="zellij:tab-bar"
         }
         pane size="25%" borderless=true {
-            plugin location="file:/home/hiromasa/.config/zellij/plugins/zellij-datetime.wasm"
+            plugin location="file:/home/$USER/.config/zellij/plugins/zellij-datetime.wasm"
         }
     }
     pane
@@ -92,7 +92,7 @@ https://github.com/h1romas4/zellij-datetime/assets/4337664/6ba30ce8-f1c5-4c32-9d
 ```
 layout {
     pane size=1 borderless=true {
-        plugin location="file:/home/hiromasa/.config/zellij/plugins/zellij-datetime.wasm" {
+        plugin location="file:/home/$USER/.config/zellij/plugins/zellij-datetime.wasm" {
             timezone1 "PDT/-9"
             timezone2 "UTC/0"
             timezone3 "CEST/+2"
