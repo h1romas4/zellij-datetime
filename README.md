@@ -80,6 +80,14 @@ layout {
 }
 ```
 
+This configuration may not work properly unless zellij displays the pane frame as follows in the default settings for version `0.45` and later.
+
+`.config/zellij/config.kdl`:
+
+```
+pane_frame_style "full"
+```
+
 ## Usage
 
 - Timezone can be selected by left mouse click or scrolling.
