@@ -10,11 +10,11 @@ Zellij's plugin system leverages WebAssembly/WASI, and this plugin will also wor
 
 ## Require
 
-* Zellij `0.41.1` or later
+* Zellij `0.45.0` or later
 
 ```
 $ zellij -V
-zellij 0.41.1
+zellij 0.45.0
 ```
 
 ## Setup
